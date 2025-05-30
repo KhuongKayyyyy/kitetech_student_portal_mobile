@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
-import 'package:kitetech_student_portal/presentation/view/student_detail/student_detail.dart';
 
 class StudentCard extends StatefulWidget {
   final StudentCardData studentCardData;
@@ -18,10 +17,10 @@ class _StudentCardState extends State<StudentCard> {
     return InkWell(
       onTap: () {
         widget.onTap();
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const StudentDetail()),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const StudentDetail()),
+        // );
       },
       child: Container(
         width: 350,

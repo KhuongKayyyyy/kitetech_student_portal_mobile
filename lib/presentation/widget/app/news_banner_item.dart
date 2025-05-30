@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/data/model/news.dart';
 
 class NewsBannerItem extends StatelessWidget {
@@ -8,7 +10,9 @@ class NewsBannerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        context.pushNamed(AppRouter.newsReadPage);
+      },
       child: Stack(
         children: [
           Container(
