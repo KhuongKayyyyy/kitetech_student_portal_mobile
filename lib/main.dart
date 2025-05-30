@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kitetech_student_portal/core/router/app_navigation.dart';
-
 import 'package:kitetech_student_portal/core/theme/app_theme.dart';
 
 void main() async {
@@ -18,8 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: "KiteTech Student Portal",
-      routerConfig: AppNavigation.router,
       theme: AppTheme.theme,
+      routerConfig: AppNavigation.router,
     );
   }
 }

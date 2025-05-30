@@ -29,7 +29,7 @@ class QRScannerWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: const Icon(CupertinoIcons.rocket, color: Colors.white),
+          child: const Icon(CupertinoIcons.qrcode, color: Colors.white),
         ),
       ),
     );

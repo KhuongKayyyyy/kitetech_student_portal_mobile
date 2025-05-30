@@ -31,13 +31,13 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             inactiveColor: AppColors.grey,
             activeColor: AppColors.primaryColor,
             icon: const Icon(CupertinoIcons.home),
-            title: const Text('Home'),
+            title: const Text('Trang chủ'),
           ),
           FlashyTabBarItem(
             inactiveColor: AppColors.grey,
             activeColor: AppColors.primaryColor,
             icon: const Icon(CupertinoIcons.news),
-            title: const Text("News"),
+            title: const Text("Thông báo"),
           ),
           FlashyTabBarItem(
             inactiveColor: AppColors.grey,
@@ -48,14 +48,14 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
           FlashyTabBarItem(
             inactiveColor: AppColors.grey,
             activeColor: AppColors.primaryColor,
-            icon: const Icon(CupertinoIcons.tree),
-            title: const Text('Fileds'),
+            icon: const Icon(CupertinoIcons.chat_bubble),
+            title: const Text('Nhắn tin'),
           ),
           FlashyTabBarItem(
             inactiveColor: AppColors.grey,
             activeColor: AppColors.primaryColor,
             icon: const Icon(CupertinoIcons.person),
-            title: const Text('Profile'),
+            title: const Text('Hồ sơ'),
           ),
         ],
       ),
