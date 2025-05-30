@@ -1,15 +1,11 @@
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
-import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
-import 'package:kitetech_student_portal/presentation/widget/student/student_card.dart';
-import 'package:nfc_manager/nfc_manager.dart';
-import 'dart:typed_data';
-import 'package:http/http.dart' as http;
-
-import 'package:nfc_manager/platform_tags.dart';
+import 'package:kitetech_student_portal/core/constant/app_color.dart';
+import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/presentation/widget/app/app_function_item.dart';
+import 'package:kitetech_student_portal/presentation/widget/app/news_banner_item.dart';
+import 'package:kitetech_student_portal/presentation/widget/student/student_header.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -19,185 +15,153 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  late FToast fToast;
-  bool isAvailable = false;
-  String? tagData;
-  String? errorMessage;
-  String? studentRFID;
-  Map<String, dynamic>? studentInfo;
-
+  late final PageController _pageController;
+  int _currentPage = 0;
+  late final Timer _timer;
   @override
   void initState() {
     super.initState();
-    _checkNfcAvailability();
-    fToast = FToast();
-    fToast.init(context);
-  }
+    _pageController = PageController(viewportFraction: 0.8);
 
-  void _showToast(StudentCardData studentCardData) {
-    Widget toast = StudentCard(
-      studentCardData: studentCardData,
-      onTap: () => fToast.removeCustomToast(),
-    );
-
-    // Show the toast with a dismiss button and swipe up to dismiss
-    fToast.showToast(
-      child: GestureDetector(
-        onTap: () {
-          fToast.removeCustomToast();
-        },
-        onVerticalDragEnd: (details) {
-          // Check if the swipe was upward
-          if (details.primaryVelocity != null && details.primaryVelocity! < 0) {
-            fToast.removeCustomToast();
-          }
-        },
-        child: Stack(
-          children: [
-            toast,
-            Positioned(
-              right: 5,
-              top: 5,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.7),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      gravity: ToastGravity.TOP,
-      toastDuration: const Duration(seconds: 5),
-    );
-  }
-
-  Future<void> _checkNfcAvailability() async {
-    isAvailable = await NfcManager.instance.isAvailable();
-    setState(() {
-      isAvailable = isAvailable;
+    // Autoscroll every 3 seconds
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (_pageController.hasClients) {
+        _currentPage++;
+        if (_currentPage >= FakeData.news.length) _currentPage = 0;
+        _pageController.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+        );
+      }
     });
   }
 
-  Future<void> _fetchStudentInfo(String rfid) async {
-    try {
-      final response = await http.post(
-        Uri.parse('http://192.168.88.132:5001/api/student'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'rfid': rfid}),
-      );
-
-      if (response.statusCode == 200) {
-        setState(() {
-          studentInfo = json.decode(response.body);
-          print('Student Info: $studentInfo');
-          _showToast(StudentCardData(
-              studentName: "Nguyen Dat Khuong",
-              studentId: "52100973",
-              studentEmail: "zzkhngzz@gmail.com",
-              studentPhone: "0907827157",
-              studentAddress: "123 Main St",
-              studentCity: "Hanoi",
-              studentState: "Vietnam",
-              imageUrl:
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXXckRlC33zt7zHBLpEEEeqY_MGIn89LOdGw&s"));
-        });
-      } else {
-        setState(() {
-          errorMessage = 'Failed to fetch student information';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        errorMessage = 'Error: ${e.toString()}';
-      });
-    }
+  @override
+  void dispose() {
+    _timer.cancel();
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Homepage"),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              isAvailable ? "NFC is available" : "NFC is not available",
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
-            if (errorMessage != null) ...[
-              const SizedBox(height: 10),
-              Text(
-                "Error: $errorMessage",
-                style: const TextStyle(color: Colors.red),
-              ),
-            ],
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  tagData = null;
-                  errorMessage = null;
-                  studentInfo = null;
-                });
-                NfcManager.instance.startSession(
-                  onDiscovered: (NfcTag tag) async {
-                    final NfcA? nfca = NfcA.from(tag);
-                    if (nfca == null) {
-                      NfcManager.instance
-                          .stopSession(errorMessage: 'Not an NFC-A tag');
-                      return;
-                    }
-                    Uint8List uidBytes = nfca.identifier;
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          centerTitle: true,
+          expandedHeight: 150,
+          pinned: true,
+          flexibleSpace: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final top = constraints.biggest.height;
+              final expanded = top > 120;
 
-                    String uidHex = uidBytes
-                        .map((b) => b.toRadixString(16).padLeft(2, '0'))
-                        .join('')
-                        .toUpperCase();
-                    await _fetchStudentInfo(uidHex);
-
-                    setState(() {
-                      tagData = tag.data.toString();
-                      studentRFID = uidHex;
-                    });
-
-                    NfcManager.instance.stopSession();
-                  },
-                  onError: (error) async {
-                    setState(() {
-                      errorMessage = error.toString();
-                    });
-                    NfcManager.instance
-                        .stopSession(errorMessage: error.toString());
-                  },
-                );
-              },
-              child: const Text("Start NFC Session"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
-              },
-              child: const Text("Login"),
-            ),
-          ],
+              return Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.blue,
+                      Colors.green,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
+                child: StudentHeader(
+                  student: FakeData.student,
+                  isExpanded: expanded,
+                ),
+              );
+            },
+          ),
         ),
-      ),
+
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: TextField(
+                cursorColor: AppColors.primaryColor,
+                decoration: InputDecoration(
+                  hintText: "Tìm kiếm chức năng ...",
+                  prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+
+        //
+        SliverToBoxAdapter(
+          child: GridView.count(
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            crossAxisCount: 4,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            children: const [
+              AppFunctionItem(title: "Thông báo", icon: Icons.notifications),
+              AppFunctionItem(title: "Điểm số", icon: Icons.grade),
+              AppFunctionItem(title: "Thời khóa biểu", icon: Icons.schedule),
+              AppFunctionItem(title: "Học phí", icon: Icons.payment),
+              AppFunctionItem(title: "Thông tin SV", icon: Icons.person),
+              AppFunctionItem(title: "Điểm danh", icon: Icons.event),
+              AppFunctionItem(title: "Chuyên cần", icon: Icons.book),
+            ],
+          ),
+        ),
+
+        SliverToBoxAdapter(
+          child: Container(
+            height: 200,
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: FakeData.news.length,
+              onPageChanged: (index) {
+                _currentPage = index;
+              },
+              itemBuilder: (context, index) {
+                return AnimatedBuilder(
+                  animation: PageController(viewportFraction: 0.8),
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: 1.0,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        child: NewsBannerItem(news: FakeData.news[index]),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
