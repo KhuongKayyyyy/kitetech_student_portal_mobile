@@ -4,6 +4,7 @@ import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/news_read_page.dart';
 import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
+import 'package:kitetech_student_portal/presentation/view/main/home/timetable.dart';
 import 'package:kitetech_student_portal/presentation/view/main_wrapper/main_wrapper.dart';
 
 class AppNavigation {
@@ -51,7 +52,11 @@ class AppNavigation {
         GoRoute(
             path: AppRouter.home,
             name: AppRouter.home,
-            builder: (context, state) => const Homepage())
+            builder: (context, state) => const Homepage()),
+        GoRoute(
+            path: AppRouter.timetablePage,
+            name: AppRouter.timetablePage,
+            builder: (context, state) => const TimetablePage())
       ],
     );
   }

@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
+import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/app_function_item.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/news_banner_item.dart';
@@ -122,14 +124,37 @@ class _HomepageState extends State<Homepage> {
             physics: const NeverScrollableScrollPhysics(),
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
-            children: const [
-              AppFunctionItem(title: "Thông báo", icon: Icons.notifications),
-              AppFunctionItem(title: "Điểm số", icon: Icons.grade),
-              AppFunctionItem(title: "Thời khóa biểu", icon: Icons.schedule),
-              AppFunctionItem(title: "Học phí", icon: Icons.payment),
-              AppFunctionItem(title: "Thông tin SV", icon: Icons.person),
-              AppFunctionItem(title: "Điểm danh", icon: Icons.event),
-              AppFunctionItem(title: "Chuyên cần", icon: Icons.book),
+            children: [
+              AppFunctionItem(
+                title: "Thông báo",
+                icon: Icons.notifications,
+                onTap: () {},
+              ),
+              AppFunctionItem(
+                title: "Điểm số",
+                icon: Icons.grade,
+                onTap: () {},
+              ),
+              AppFunctionItem(
+                title: "Thời khóa biểu",
+                icon: Icons.schedule,
+                onTap: () => context.pushNamed(AppRouter.timetablePage),
+              ),
+              AppFunctionItem(
+                title: "Học phí",
+                icon: Icons.payment,
+                onTap: () {},
+              ),
+              AppFunctionItem(
+                title: "Thông tin SV",
+                icon: Icons.person,
+                onTap: () {},
+              ),
+              AppFunctionItem(
+                title: "Điểm danh",
+                icon: Icons.event,
+                onTap: () {},
+              ),
             ],
           ),
         ),

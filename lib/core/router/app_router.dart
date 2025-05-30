@@ -7,4 +7,5 @@ class AppRouter {
   static const String notifications = '/notifications';
 
   static const String newsReadPage = '/news-read-page';
+  static const String timetablePage = '/timetable-page';
 }
