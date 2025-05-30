@@ -1,0 +1,8 @@
+class AppRouter {
+  static const String home = '/';
+  static const String authentication = '/authentication';
+  static const String chat = '/chat';
+  static const String profile = '/profile';
+  static const String settings = '/settings';
+  static const String notifications = '/notifications';
+}
