@@ -8,4 +8,6 @@ class AppRouter {
 
   static const String newsReadPage = '/news-read-page';
   static const String timetablePage = '/timetable-page';
+  static const String nameRecognitionPage = '/name-recognition-page';
+  static const String studentDetailInformation = '/student-detail-information';
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
+import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/news_read_page.dart';
+import 'package:kitetech_student_portal/presentation/view/add_on/student_detail_information.dart';
 import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/timetable.dart';
@@ -56,7 +58,15 @@ class AppNavigation {
         GoRoute(
             path: AppRouter.timetablePage,
             name: AppRouter.timetablePage,
-            builder: (context, state) => const TimetablePage())
+            builder: (context, state) => const TimetablePage()),
+        GoRoute(
+            path: AppRouter.nameRecognitionPage,
+            name: AppRouter.nameRecognitionPage,
+            builder: (context, state) => const NameRecognitionPage()),
+        GoRoute(
+            path: AppRouter.studentDetailInformation,
+            name: AppRouter.studentDetailInformation,
+            builder: (context, state) => const StudentDetailInformationPage())
       ],
     );
   }

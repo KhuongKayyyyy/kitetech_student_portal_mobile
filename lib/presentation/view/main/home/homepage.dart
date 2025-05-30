@@ -116,77 +116,85 @@ class _HomepageState extends State<Homepage> {
         ),
 
         //
-        SliverToBoxAdapter(
-          child: GridView.count(
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            crossAxisCount: 4,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            children: [
-              AppFunctionItem(
-                title: "Thông báo",
-                icon: Icons.notifications,
-                onTap: () {},
-              ),
-              AppFunctionItem(
-                title: "Điểm số",
-                icon: Icons.grade,
-                onTap: () {},
-              ),
-              AppFunctionItem(
-                title: "Thời khóa biểu",
-                icon: Icons.schedule,
-                onTap: () => context.pushNamed(AppRouter.timetablePage),
-              ),
-              AppFunctionItem(
-                title: "Học phí",
-                icon: Icons.payment,
-                onTap: () {},
-              ),
-              AppFunctionItem(
-                title: "Thông tin SV",
-                icon: Icons.person,
-                onTap: () {},
-              ),
-              AppFunctionItem(
-                title: "Điểm danh",
-                icon: Icons.event,
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
+        _buildFeatureSection(context),
 
-        SliverToBoxAdapter(
-          child: Container(
-            height: 200,
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: FakeData.news.length,
-              onPageChanged: (index) {
-                _currentPage = index;
-              },
-              itemBuilder: (context, index) {
-                return AnimatedBuilder(
-                  animation: PageController(viewportFraction: 0.8),
-                  builder: (context, child) {
-                    return Transform.scale(
-                      scale: 1.0,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        child: NewsBannerItem(news: FakeData.news[index]),
-                      ),
-                    );
-                  },
+        _buildNewsSection(),
+      ],
+    );
+  }
+
+  SliverToBoxAdapter _buildNewsSection() {
+    return SliverToBoxAdapter(
+      child: Container(
+        height: 200,
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        child: PageView.builder(
+          controller: _pageController,
+          itemCount: FakeData.news.length,
+          onPageChanged: (index) {
+            _currentPage = index;
+          },
+          itemBuilder: (context, index) {
+            return AnimatedBuilder(
+              animation: PageController(viewportFraction: 0.8),
+              builder: (context, child) {
+                return Transform.scale(
+                  scale: 1.0,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    child: NewsBannerItem(news: FakeData.news[index]),
+                  ),
                 );
               },
-            ),
-          ),
+            );
+          },
         ),
-      ],
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _buildFeatureSection(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: GridView.count(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        crossAxisCount: 4,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+        children: [
+          AppFunctionItem(
+            title: "Thông báo",
+            icon: Icons.notifications,
+            onTap: () {},
+          ),
+          AppFunctionItem(
+            title: "Điểm số",
+            icon: Icons.grade,
+            onTap: () {},
+          ),
+          AppFunctionItem(
+            title: "Thời khóa biểu",
+            icon: Icons.schedule,
+            onTap: () => context.pushNamed(AppRouter.timetablePage),
+          ),
+          AppFunctionItem(
+            title: "Học phí",
+            icon: Icons.payment,
+            onTap: () {},
+          ),
+          AppFunctionItem(
+            title: "Thông tin SV",
+            icon: Icons.person,
+            onTap: () => context.pushNamed(AppRouter.studentDetailInformation),
+          ),
+          AppFunctionItem(
+            title: "Điểm danh",
+            icon: Icons.event,
+            onTap: () => context.pushNamed(AppRouter.nameRecognitionPage),
+          ),
+        ],
+      ),
     );
   }
 }
