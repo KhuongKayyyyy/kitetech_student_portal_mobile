@@ -9,6 +9,7 @@ import 'package:kitetech_student_portal/presentation/view/add_on/name_recognitio
 import 'package:kitetech_student_portal/presentation/view/add_on/news_read_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/student_detail_information.dart';
 import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
+import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_room_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/scoreboard_page.dart';
@@ -97,7 +98,7 @@ class AppNavigation {
         GoRoute(
             path: AppRouter.chat,
             name: AppRouter.chat,
-            builder: (context, state) => const Homepage()),
+            builder: (context, state) => const ChatHomePage()),
       ],
     );
   }
@@ -107,8 +108,8 @@ class AppNavigation {
       navigatorKey: _paddingNavigatorKey,
       routes: [
         GoRoute(
-            path: "padding",
-            name: "padding",
+            path: AppRouter.padding,
+            name: AppRouter.padding,
             builder: (context, state) => const Homepage())
       ],
     );

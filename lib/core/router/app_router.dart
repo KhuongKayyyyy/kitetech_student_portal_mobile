@@ -5,6 +5,7 @@ class AppRouter {
   static const String profile = '/profile';
   static const String news = '/news';
   static const String notifications = '/notifications';
+  static const String padding = '/padding';
 
   static const String newsReadPage = '/news-read-page';
   static const String timetablePage = '/timetable-page';
@@ -18,4 +19,5 @@ class AppRouter {
   static const String scoreboardPage = '/scoreboard-page';
 
   static const String chatRoomPage = '/chat-room-page';
+  static const String chatHomePage = '/chat-home-page';
 }

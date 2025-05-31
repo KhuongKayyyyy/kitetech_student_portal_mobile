@@ -404,5 +404,61 @@ class FakeData {
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
       lastSeen: 1717238400000,
     ),
+    const types.User(
+      id: '4',
+      firstName: 'Tran',
+      lastName: 'Minh An',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 0,
+    ),
+    const types.User(
+      id: '5',
+      firstName: 'Le',
+      lastName: 'Thi Hoa',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 1717324800000,
+    ),
+    const types.User(
+      id: '6',
+      firstName: 'Pham',
+      lastName: 'Van Nam',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 0,
+    ),
+    const types.User(
+      id: '7',
+      firstName: 'Vo',
+      lastName: 'Thanh Linh',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 1717411200000,
+    ),
+    const types.User(
+      id: '8',
+      firstName: 'Do',
+      lastName: 'Quang Huy',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 0,
+    ),
+    const types.User(
+      id: '9',
+      firstName: 'Nguyen',
+      lastName: 'Thi Mai',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 1717497600000,
+    ),
+    const types.User(
+      id: '10',
+      firstName: 'Hoang',
+      lastName: 'Van Duc',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 0,
+    ),
   ];
 }

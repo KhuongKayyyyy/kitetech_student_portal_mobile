@@ -17,7 +17,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 90,
+      height: 80,
       child: FlashyTabBar(
         backgroundColor: Colors.white,
         selectedIndex: _selectedIndex,

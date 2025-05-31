@@ -31,7 +31,7 @@ class _MainWrapperState extends State<MainWrapper>
                 right: 0,
                 child: AppBottomNavigationBar(widget: widget)),
             const Positioned(
-              bottom: 30,
+              bottom: 20,
               left: 0,
               right: 0,
               child: Center(child: QRScannerWidget()),
