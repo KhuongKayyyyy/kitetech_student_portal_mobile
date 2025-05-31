@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
+import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 
 class StudentDetailInformationPage extends StatelessWidget {
   const StudentDetailInformationPage({super.key});
@@ -10,7 +11,7 @@ class StudentDetailInformationPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Thông tin sinh viên",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: AppTextStyle.title,
         ),
         centerTitle: true,
       ),

@@ -1,4 +1,6 @@
 import 'package:kitetech_student_portal/data/model/class.dart';
+import 'package:kitetech_student_portal/data/model/enums/NameRecognitionEnum.dart';
+import 'package:kitetech_student_portal/data/model/name_recognition.dart';
 import 'package:kitetech_student_portal/data/model/news.dart';
 import 'package:kitetech_student_portal/data/model/student.dart';
 
@@ -163,6 +165,21 @@ class FakeData {
       roomId: '14',
       period: '1',
       weekNumbers: [1, 2, 3, 4, 5],
+    ),
+  ];
+
+  static final List<NameRecognition> nameRecognitions = [
+    NameRecognition(
+      id: '1',
+      name: 'Điểm danh lớp OOP',
+      date: DateTime(2025, 5, 1),
+      type: NameRecognitionEnum.classRecognition,
+    ),
+    NameRecognition(
+      id: '2',
+      name: 'Điểm danh sự kiện thể thao',
+      date: DateTime(2025, 5, 1),
+      type: NameRecognitionEnum.eventRecognition,
     ),
   ];
 }

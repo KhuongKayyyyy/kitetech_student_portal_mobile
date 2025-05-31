@@ -1,0 +1,4 @@
+enum NameRecognitionEnum {
+  classRecognition,
+  eventRecognition,
+}

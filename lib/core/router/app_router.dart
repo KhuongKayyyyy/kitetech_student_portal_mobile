@@ -9,5 +9,9 @@ class AppRouter {
   static const String newsReadPage = '/news-read-page';
   static const String timetablePage = '/timetable-page';
   static const String nameRecognitionPage = '/name-recognition-page';
+  static const String nameRecognitionHistoryPage =
+      '/name-recognition-history-page';
+  static const String nameRecognitionPinPage = '/name-recognition-pin-page';
   static const String studentDetailInformation = '/student-detail-information';
+  static const String nameRecognitionQrScanner = '/name-recognition-qr-scanner';
 }

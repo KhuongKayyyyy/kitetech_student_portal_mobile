@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
+import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
 import 'package:kitetech_student_portal/core/util/string_util.dart';
 import 'package:kitetech_student_portal/data/model/class.dart';
@@ -70,8 +71,7 @@ class _TimetablePageState extends State<TimetablePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text("Thời khóa biểu", style: TextStyle(color: Colors.black)),
+        title: const Text("Thời khóa biểu", style: AppTextStyle.title),
         backgroundColor: AppColors.primaryColor.withOpacity(0.2),
         elevation: 0,
       ),

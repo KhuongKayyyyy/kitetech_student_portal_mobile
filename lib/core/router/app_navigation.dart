@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
-import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition_page.dart';
+import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_history_page.dart';
+import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_page.dart';
+import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_qr_scanner.dart';
+import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recogniton_pin_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/news_read_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/student_detail_information.dart';
 import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
@@ -66,7 +70,21 @@ class AppNavigation {
         GoRoute(
             path: AppRouter.studentDetailInformation,
             name: AppRouter.studentDetailInformation,
-            builder: (context, state) => const StudentDetailInformationPage())
+            builder: (context, state) => const StudentDetailInformationPage()),
+        GoRoute(
+            path: AppRouter.nameRecognitionHistoryPage,
+            name: AppRouter.nameRecognitionHistoryPage,
+            builder: (context, state) => const NameRecognitionHistoryPage()),
+        GoRoute(
+            path: AppRouter.nameRecognitionPinPage,
+            name: AppRouter.nameRecognitionPinPage,
+            builder: (context, state) => const NameRecognitonPinPage()),
+        GoRoute(
+            path: AppRouter.nameRecognitionQrScanner,
+            name: AppRouter.nameRecognitionQrScanner,
+            builder: (context, state) => NameRecognitionQrScanner(
+                  student: FakeData.student,
+                ))
       ],
     );
   }
