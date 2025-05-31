@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/data/model/student.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
@@ -93,6 +95,22 @@ class _NameRecognitionQrScannerState extends State<NameRecognitionQrScanner> {
           ),
           // Draggable bottom sheet for student QR display
           _buildStudentQR(),
+          Positioned(
+            top: 40,
+            left: 20,
+            child: InkWell(
+              onTap: () {
+                context.pop();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black.withOpacity(0.3)),
+                child: const Icon(CupertinoIcons.chevron_back),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -100,7 +118,7 @@ class _NameRecognitionQrScannerState extends State<NameRecognitionQrScanner> {
 
   DraggableScrollableSheet _buildStudentQR() {
     return DraggableScrollableSheet(
-      initialChildSize: 0.2,
+      initialChildSize: 0.1,
       minChildSize: 0.1,
       maxChildSize: 0.8,
       builder: (context, scrollController) {
@@ -229,7 +247,7 @@ class _NameRecognitionQrScannerState extends State<NameRecognitionQrScanner> {
                                   color: AppColors.primary.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.refresh,
                                   size: 18,
                                   color: AppColors.primary,

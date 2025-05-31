@@ -30,11 +30,12 @@ class AppNavigation {
       GlobalKey<NavigatorState>();
 
   static final GoRouter router = GoRouter(
+    navigatorKey: _rootNavigatorKey,
     initialLocation: AppRouter.home,
     routes: [
       _buildMainShellRoute(),
       ..._buildAuthenticationBranch(),
-      ..._buildAddOnBranch(),
+      ..._buildNoBottomNavRoute(),
     ],
   );
 
@@ -79,12 +80,6 @@ class AppNavigation {
             path: AppRouter.nameRecognitionPinPage,
             name: AppRouter.nameRecognitionPinPage,
             builder: (context, state) => const NameRecognitonPinPage()),
-        GoRoute(
-            path: AppRouter.nameRecognitionQrScanner,
-            name: AppRouter.nameRecognitionQrScanner,
-            builder: (context, state) => NameRecognitionQrScanner(
-                  student: FakeData.student,
-                ))
       ],
     );
   }
@@ -147,13 +142,19 @@ class AppNavigation {
     ];
   }
 
-  static List<GoRoute> _buildAddOnBranch() {
+  static List<GoRoute> _buildNoBottomNavRoute() {
     return [
       GoRoute(
         path: AppRouter.newsReadPage,
         name: AppRouter.newsReadPage,
         builder: (context, state) => const NewsReadPage(),
       ),
+      GoRoute(
+          path: AppRouter.nameRecognitionQrScanner,
+          name: AppRouter.nameRecognitionQrScanner,
+          builder: (context, state) => NameRecognitionQrScanner(
+                student: FakeData.student,
+              ))
     ];
   }
 }

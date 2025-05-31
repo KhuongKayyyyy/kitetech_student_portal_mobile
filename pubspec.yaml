@@ -37,7 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   nfc_manager: ^3.3.0
   http: ^1.4.0
-  flutter_dotenv: ^5.2.1`
   fluttertoast: ^8.2.12
   go_router: ^15.1.2
   flashy_tab_bar2: ^0.0.10
