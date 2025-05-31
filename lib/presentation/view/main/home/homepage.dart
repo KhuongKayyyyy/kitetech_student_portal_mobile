@@ -171,7 +171,7 @@ class _HomepageState extends State<Homepage> {
           AppFunctionItem(
             title: "Điểm số",
             icon: Icons.grade,
-            onTap: () {},
+            onTap: () => context.pushNamed(AppRouter.scoreboardPage),
           ),
           AppFunctionItem(
             title: "Thời khóa biểu",

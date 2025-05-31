@@ -14,6 +14,7 @@ class StudentDetailInformationPage extends StatelessWidget {
           style: AppTextStyle.title,
         ),
         centerTitle: true,
+        backgroundColor: AppColors.primaryColor.withOpacity(0.2),
       ),
       body: SingleChildScrollView(
         child: Column(

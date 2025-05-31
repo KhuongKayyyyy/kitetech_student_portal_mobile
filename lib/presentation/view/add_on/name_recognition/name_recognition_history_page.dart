@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
-import 'package:kitetech_student_portal/data/model/name_recognition.dart';
 import 'package:kitetech_student_portal/presentation/widget/timetable/name_recognition_history_item.dart';
 
 class NameRecognitionHistoryPage extends StatefulWidget {

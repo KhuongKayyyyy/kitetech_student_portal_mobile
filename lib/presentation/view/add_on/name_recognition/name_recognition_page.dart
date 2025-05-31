@@ -20,6 +20,7 @@ class _NameRecognitionPageState extends State<NameRecognitionPage> {
           "Điểm danh",
           style: AppTextStyle.title,
         ),
+        backgroundColor: AppColors.primaryColor.withOpacity(0.2),
         centerTitle: true,
       ),
       body: Column(

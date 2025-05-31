@@ -112,15 +112,46 @@ class _TimetablePageState extends State<TimetablePage> {
               StringUtil.formatDate(selectedDate),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            ListView.builder(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return SubjectClassItem(classModel: classes[index]);
-              },
-              itemCount: classes.length,
-            ),
+            classes.isEmpty
+                ? Container(
+                    padding: const EdgeInsets.all(20),
+                    child: const Column(
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          size: 60,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Không có lịch học',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Hôm nay bạn không có lịch học nào',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return SubjectClassItem(classModel: classes[index]);
+                    },
+                    itemCount: classes.length,
+                  ),
           ],
         ),
       ),

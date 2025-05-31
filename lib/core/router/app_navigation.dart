@@ -10,7 +10,8 @@ import 'package:kitetech_student_portal/presentation/view/add_on/news_read_page.
 import 'package:kitetech_student_portal/presentation/view/add_on/student_detail_information.dart';
 import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
-import 'package:kitetech_student_portal/presentation/view/main/home/timetable.dart';
+import 'package:kitetech_student_portal/presentation/view/main/home/scoreboard_page.dart';
+import 'package:kitetech_student_portal/presentation/view/main/home/timetable_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main_wrapper/main_wrapper.dart';
 
 class AppNavigation {
@@ -80,6 +81,10 @@ class AppNavigation {
             path: AppRouter.nameRecognitionPinPage,
             name: AppRouter.nameRecognitionPinPage,
             builder: (context, state) => const NameRecognitonPinPage()),
+        GoRoute(
+            path: AppRouter.scoreboardPage,
+            name: AppRouter.scoreboardPage,
+            builder: (context, state) => const ScoreboardPage()),
       ],
     );
   }
