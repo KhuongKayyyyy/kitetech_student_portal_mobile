@@ -193,6 +193,11 @@ class _HomepageState extends State<Homepage> {
             icon: Icons.event,
             onTap: () => context.pushNamed(AppRouter.nameRecognitionPage),
           ),
+          AppFunctionItem(
+            title: "Chat",
+            icon: Icons.chat,
+            onTap: () => context.pushNamed(AppRouter.chatRoomPage),
+          ),
         ],
       ),
     );

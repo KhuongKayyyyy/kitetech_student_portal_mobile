@@ -1,3 +1,5 @@
+import 'package:flutter_chat_core/flutter_chat_core.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:kitetech_student_portal/data/model/class.dart';
 import 'package:kitetech_student_portal/data/model/enums/NameRecognitionEnum.dart';
 import 'package:kitetech_student_portal/data/model/name_recognition.dart';
@@ -375,5 +377,32 @@ class FakeData {
       semester: "Học kỳ 2",
     ),
     // Add more sample data as needed
+  ];
+
+  static final List<types.User> chatUsers = [
+    const types.User(
+      id: '1',
+      firstName: 'Nguyen',
+      lastName: 'Dat Khuong',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 0,
+    ),
+    const types.User(
+      id: '2',
+      firstName: 'Huynh',
+      lastName: 'Trieu Vy',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 1717238400000,
+    ),
+    const types.User(
+      id: '3',
+      firstName: 'Bui',
+      lastName: 'Ngoc Truong',
+      imageUrl:
+          'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
+      lastSeen: 1717238400000,
+    ),
   ];
 }

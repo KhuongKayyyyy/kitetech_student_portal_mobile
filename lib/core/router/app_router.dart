@@ -3,7 +3,7 @@ class AppRouter {
   static const String authentication = '/authentication';
   static const String chat = '/chat';
   static const String profile = '/profile';
-  static const String settings = '/settings';
+  static const String news = '/news';
   static const String notifications = '/notifications';
 
   static const String newsReadPage = '/news-read-page';
@@ -16,4 +16,6 @@ class AppRouter {
   static const String nameRecognitionQrScanner = '/name-recognition-qr-scanner';
 
   static const String scoreboardPage = '/scoreboard-page';
+
+  static const String chatRoomPage = '/chat-room-page';
 }

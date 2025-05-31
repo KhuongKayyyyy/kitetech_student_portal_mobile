@@ -9,6 +9,7 @@ import 'package:kitetech_student_portal/presentation/view/add_on/name_recognitio
 import 'package:kitetech_student_portal/presentation/view/add_on/news_read_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/student_detail_information.dart';
 import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
+import 'package:kitetech_student_portal/presentation/view/main/chat/chat_room_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/scoreboard_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/timetable_page.dart';
@@ -27,7 +28,7 @@ class AppNavigation {
       GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> _profileNavigatorKey =
       GlobalKey<NavigatorState>();
-  static final GlobalKey<NavigatorState> _settingsNavigatorKey =
+  static final GlobalKey<NavigatorState> _newsNavigatorKey =
       GlobalKey<NavigatorState>();
 
   static final GoRouter router = GoRouter(
@@ -46,10 +47,10 @@ class AppNavigation {
             MainWrapper(navigationShell: navigationShell),
         branches: [
           _buildHomeBranch(),
-          _buildChatBranch(),
+          _buildNewsBranch(),
           _buildPaddingBranch(),
+          _buildChatBranch(),
           _buildProfileBranch(),
-          _buildSettingsBranch()
         ]);
   }
 
@@ -96,7 +97,7 @@ class AppNavigation {
         GoRoute(
             path: AppRouter.chat,
             name: AppRouter.chat,
-            builder: (context, state) => const Homepage())
+            builder: (context, state) => const Homepage()),
       ],
     );
   }
@@ -125,13 +126,13 @@ class AppNavigation {
     );
   }
 
-  static StatefulShellBranch _buildSettingsBranch() {
+  static StatefulShellBranch _buildNewsBranch() {
     return StatefulShellBranch(
-      navigatorKey: _settingsNavigatorKey,
+      navigatorKey: _newsNavigatorKey,
       routes: [
         GoRoute(
-            path: AppRouter.settings,
-            name: AppRouter.settings,
+            path: AppRouter.news,
+            name: AppRouter.news,
             builder: (context, state) => const Homepage())
       ],
     );
@@ -159,6 +160,12 @@ class AppNavigation {
           name: AppRouter.nameRecognitionQrScanner,
           builder: (context, state) => NameRecognitionQrScanner(
                 student: FakeData.student,
+              )),
+      GoRoute(
+          path: AppRouter.chatRoomPage,
+          name: AppRouter.chatRoomPage,
+          builder: (context, state) => ChatRoomPage(
+                user: FakeData.chatUsers.elementAt(1),
               ))
     ];
   }
