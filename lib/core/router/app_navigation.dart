@@ -13,9 +13,11 @@ import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_pa
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_search.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_room_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_search_history.dart';
+import 'package:kitetech_student_portal/presentation/view/main/home/home_search_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/scoreboard_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/timetable_page.dart';
+import 'package:kitetech_student_portal/presentation/view/main/profile/profile_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main_wrapper/main_wrapper.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -91,6 +93,10 @@ class AppNavigation {
             path: AppRouter.scoreboardPage,
             name: AppRouter.scoreboardPage,
             builder: (context, state) => const ScoreboardPage()),
+        GoRoute(
+            path: AppRouter.homeSearchPage,
+            name: AppRouter.homeSearchPage,
+            builder: (context, state) => const HomeSearchPage()),
       ],
     );
   }
@@ -132,9 +138,9 @@ class AppNavigation {
       navigatorKey: _profileNavigatorKey,
       routes: [
         GoRoute(
-            path: AppRouter.profile,
-            name: AppRouter.profile,
-            builder: (context, state) => const Homepage())
+            path: AppRouter.profilePage,
+            name: AppRouter.profilePage,
+            builder: (context, state) => const ProfilePage())
       ],
     );
   }

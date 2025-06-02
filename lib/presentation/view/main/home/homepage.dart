@@ -6,6 +6,7 @@ import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/app_function_item.dart';
+import 'package:kitetech_student_portal/presentation/widget/app/app_seach_bar.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/news_banner_item.dart';
 import 'package:kitetech_student_portal/presentation/widget/student/student_header.dart';
 
@@ -83,43 +84,21 @@ class _HomepageState extends State<Homepage> {
           ),
         ),
 
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: TextField(
-                cursorColor: AppColors.primaryColor,
-                decoration: InputDecoration(
-                  hintText: "Tìm kiếm chức năng ...",
-                  prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        _buildSearchBar(),
 
         //
         _buildFeatureSection(context),
 
         _buildNewsSection(),
       ],
+    );
+  }
+
+  SliverToBoxAdapter _buildSearchBar() {
+    return SliverToBoxAdapter(
+      child: InkWell(
+          onTap: () => context.pushNamed(AppRouter.homeSearchPage),
+          child: Hero(tag: "app-search", child: AppSeachBar())),
     );
   }
 

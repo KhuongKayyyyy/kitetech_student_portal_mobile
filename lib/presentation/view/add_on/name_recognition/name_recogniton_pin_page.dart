@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
-import 'package:kitetech_student_portal/core/constant/app_gloabal.dart';
+import 'package:kitetech_student_portal/core/constant/app_global.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 
 class NameRecognitonPinPage extends StatefulWidget {
@@ -22,7 +22,7 @@ class _NameRecognitonPinPageState extends State<NameRecognitonPinPage> {
 
   void _handleNameRecognition() async {
     if (_pinController.text.isEmpty) {
-      AppGloabal.scaffoldMessengerKey.currentState?.showSnackBar(
+      AppGlobal.scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
           content: const Text('Nhận diện tên thành công!'),
           backgroundColor: Colors.green.shade400,
