@@ -10,11 +10,15 @@ import 'package:kitetech_student_portal/presentation/view/add_on/news_read_page.
 import 'package:kitetech_student_portal/presentation/view/add_on/student_detail_information.dart';
 import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_page.dart';
+import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_search.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_room_page.dart';
+import 'package:kitetech_student_portal/presentation/view/main/chat/chat_search_history.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/scoreboard_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/timetable_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main_wrapper/main_wrapper.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class AppNavigation {
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -96,9 +100,17 @@ class AppNavigation {
       navigatorKey: _chatNavigatorKey,
       routes: [
         GoRoute(
-            path: AppRouter.chat,
-            name: AppRouter.chat,
+            path: AppRouter.chatHomePage,
+            name: AppRouter.chatHomePage,
             builder: (context, state) => const ChatHomePage()),
+        GoRoute(
+            path: AppRouter.chatHomeSearch,
+            name: AppRouter.chatHomeSearch,
+            builder: (context, state) => const ChatHomeSearch()),
+        GoRoute(
+            path: AppRouter.chatSearchHistory,
+            name: AppRouter.chatSearchHistory,
+            builder: (context, state) => const ChatSearchHistory()),
       ],
     );
   }
@@ -166,8 +178,8 @@ class AppNavigation {
           path: AppRouter.chatRoomPage,
           name: AppRouter.chatRoomPage,
           builder: (context, state) => ChatRoomPage(
-                user: FakeData.chatUsers.elementAt(1),
-              ))
+                user: state.extra as types.User,
+              )),
     ];
   }
 }

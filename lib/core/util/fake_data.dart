@@ -1,4 +1,4 @@
-import 'package:flutter_chat_core/flutter_chat_core.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:kitetech_student_portal/data/model/class.dart';
 import 'package:kitetech_student_portal/data/model/enums/NameRecognitionEnum.dart';

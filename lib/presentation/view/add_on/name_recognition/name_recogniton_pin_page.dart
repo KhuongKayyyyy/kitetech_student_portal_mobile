@@ -45,6 +45,7 @@ class _NameRecognitonPinPageState extends State<NameRecognitonPinPage> {
       _isLoading = false;
     });
 
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text('Nhận diện tên thành công!'),
@@ -83,7 +84,7 @@ class _NameRecognitonPinPageState extends State<NameRecognitonPinPage> {
                 color: AppColors.primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.pin,
                 size: 80,
                 color: AppColors.primaryColor,
@@ -144,7 +145,7 @@ class _NameRecognitonPinPageState extends State<NameRecognitonPinPage> {
                   ),
                   filled: true,
                   fillColor: Colors.white,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.lock_outline,
                     color: AppColors.primaryColor,
                   ),

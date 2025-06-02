@@ -1,12 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
 import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
 import 'package:kitetech_student_portal/presentation/widget/student/student_card.dart';
 import 'package:nfc_manager/nfc_manager.dart';
-import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
 import 'package:nfc_manager/platform_tags.dart';
@@ -96,7 +96,9 @@ class _HomepageState extends State<Homepage> {
       if (response.statusCode == 200) {
         setState(() {
           studentInfo = json.decode(response.body);
-          print('Student Info: $studentInfo');
+          if (kDebugMode) {
+            print('Student Info: $studentInfo');
+          }
           _showToast(StudentCardData(
               studentName: "Nguyen Dat Khuong",
               studentId: "52100973",

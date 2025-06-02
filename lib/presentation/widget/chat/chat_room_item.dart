@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
-import 'package:kitetech_student_portal/presentation/widget/chat/user_bubble.dart';
+import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:go_router/go_router.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -34,7 +34,7 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/chat/room', extra: widget.user);
+        context.pushNamed(AppRouter.chatRoomPage, extra: widget.user);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

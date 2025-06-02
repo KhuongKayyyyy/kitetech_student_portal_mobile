@@ -36,6 +36,7 @@ class _NameRecognitionQrScannerState extends State<NameRecognitionQrScanner> {
   @override
   void dispose() {
     _timer?.cancel();
+    // ignore: deprecated_member_use
     controller?.dispose();
     super.dispose();
   }
@@ -279,12 +280,12 @@ class _NameRecognitionQrScannerState extends State<NameRecognitionQrScanner> {
                         ),
                         child: Column(
                           children: [
-                            Row(
+                            const Row(
                               children: [
                                 Icon(Icons.badge,
                                     color: AppColors.primary, size: 20),
-                                const SizedBox(width: 8),
-                                const Text(
+                                SizedBox(width: 8),
+                                Text(
                                   "Mã sinh viên:",
                                   style: TextStyle(
                                       fontSize: 14, color: Colors.black54),
@@ -301,12 +302,12 @@ class _NameRecognitionQrScannerState extends State<NameRecognitionQrScanner> {
                               ),
                             ),
                             const SizedBox(height: 12),
-                            Row(
+                            const Row(
                               children: [
                                 Icon(Icons.person,
                                     color: AppColors.primary, size: 20),
-                                const SizedBox(width: 8),
-                                const Text(
+                                SizedBox(width: 8),
+                                Text(
                                   "Họ và tên:",
                                   style: TextStyle(
                                       fontSize: 14, color: Colors.black54),

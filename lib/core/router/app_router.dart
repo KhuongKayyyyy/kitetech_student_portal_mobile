@@ -1,7 +1,6 @@
 class AppRouter {
   static const String home = '/';
   static const String authentication = '/authentication';
-  static const String chat = '/chat';
   static const String profile = '/profile';
   static const String news = '/news';
   static const String notifications = '/notifications';
@@ -20,4 +19,6 @@ class AppRouter {
 
   static const String chatRoomPage = '/chat-room-page';
   static const String chatHomePage = '/chat-home-page';
+  static const String chatHomeSearch = '/chat-home-search';
+  static const String chatSearchHistory = '/chat-search-history';
 }
