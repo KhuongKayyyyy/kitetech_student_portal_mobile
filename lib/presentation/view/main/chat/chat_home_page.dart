@@ -1,11 +1,21 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
 import 'package:kitetech_student_portal/presentation/widget/chat/chat_room_item.dart';
 import 'package:kitetech_student_portal/presentation/widget/chat/chat_search_bar.dart';
 import 'package:kitetech_student_portal/presentation/widget/chat/user_bubble.dart';
+import 'package:http/http.dart' as http;
+import 'package:kitetech_student_portal/presentation/widget/student/student_card.dart';
+import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_manager/platform_tags.dart';
 
 class ChatHomePage extends StatefulWidget {
   const ChatHomePage({super.key});
@@ -16,8 +26,29 @@ class ChatHomePage extends StatefulWidget {
 
 class _ChatHomePageState extends State<ChatHomePage> {
   bool _showSearchBar = false;
+  late FToast fToast;
+  bool isAvailable = false;
+  String? tagData;
+  String? errorMessage;
+  String? studentRFID;
+  Map<String, dynamic>? studentInfo;
+  StudentCardData? foundStudentCard;
 
   @override
+  void initState() {
+    super.initState();
+    _checkNfcAvailability();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  Future<void> _checkNfcAvailability() async {
+    isAvailable = await NfcManager.instance.isAvailable();
+    setState(() {
+      isAvailable = isAvailable;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +57,59 @@ class _ChatHomePageState extends State<ChatHomePage> {
           'Chat',
           style: AppTextStyle.title,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                tagData = null;
+                errorMessage = null;
+                studentInfo = null;
+                foundStudentCard = null;
+              });
+              NfcManager.instance.startSession(
+                onDiscovered: (NfcTag tag) async {
+                  final NfcA? nfca = NfcA.from(tag);
+                  if (nfca == null) {
+                    NfcManager.instance
+                        .stopSession(errorMessage: 'Not an NFC-A tag');
+                    return;
+                  }
+                  Uint8List uidBytes = nfca.identifier;
+
+                  String uidHex = uidBytes
+                      .map((b) => b.toRadixString(16).padLeft(2, '0'))
+                      .join('')
+                      .toUpperCase();
+                  await _fetchStudentInfo(uidHex);
+
+                  setState(() {
+                    tagData = tag.data.toString();
+                    studentRFID = uidHex;
+                  });
+
+                  NfcManager.instance.stopSession();
+                  // Pop the NFC reader dialog
+                  // ignore: use_build_context_synchronously
+                  context.pop();
+                  // Show student card popup
+                  if (foundStudentCard != null) {
+                    // ignore: use_build_context_synchronously
+                    _showStudentCardPopup(context, foundStudentCard!);
+                  }
+                },
+                onError: (error) async {
+                  setState(() {
+                    errorMessage = error.toString();
+                  });
+                  NfcManager.instance
+                      .stopSession(errorMessage: error.toString());
+                },
+              );
+              _showNFCReader(context);
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
@@ -65,16 +149,458 @@ class _ChatHomePageState extends State<ChatHomePage> {
     );
   }
 
+  Future<void> _fetchStudentInfo(String rfid) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://192.168.0.226:5001/api/student'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'rfid': rfid}),
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          studentInfo = json.decode(response.body);
+          if (kDebugMode) {
+            print('Student Info: $studentInfo');
+          }
+          foundStudentCard = StudentCardData(
+            studentName: "Nguyen Dat Khuong",
+            studentId: "52100973",
+            imageUrl:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXXckRlC33zt7zHBLpEEEeqY_MGIn89LOdGw&s",
+            classId: "52100973",
+            major: "CNTT",
+            department: "CNTT",
+            birthDate: "2002-01-01",
+            gender: "Male",
+            address: "123 Main St",
+          );
+        });
+      } else {
+        setState(() {
+          errorMessage = 'Failed to fetch student information';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Error: ${e.toString()}';
+      });
+    }
+  }
+
+  Future<dynamic> _showNFCReader(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Row(
+            children: [
+              Icon(Icons.nfc, color: AppColors.primaryColor),
+              SizedBox(width: 8),
+              Text('Tìm bạn... '),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Animated wave container
+              SizedBox(
+                height: 120,
+                width: 120,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Outer wave
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0, end: 1),
+                      duration: const Duration(seconds: 2),
+                      builder: (context, value, child) {
+                        return Transform.scale(
+                          scale: 0.5 + (value * 0.5),
+                          child: Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.primaryColor
+                                    .withOpacity(1 - value),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      onEnd: () {
+                        // This will restart the animation
+                      },
+                    ),
+                    // Middle wave
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0, end: 1),
+                      duration: const Duration(milliseconds: 1600),
+                      builder: (context, value, child) {
+                        return Transform.scale(
+                          scale: 0.3 + (value * 0.4),
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.primaryColor
+                                    .withOpacity(1 - value),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    // Inner wave
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0, end: 1),
+                      duration: const Duration(milliseconds: 1200),
+                      builder: (context, value, child) {
+                        return Transform.scale(
+                          scale: 0.1 + (value * 0.3),
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.primaryColor
+                                    .withOpacity(1 - value),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    // Center NFC icon
+                    Container(
+                      width: 24,
+                      height: 24,
+                      decoration: const BoxDecoration(
+                        color: AppColors.primaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.nfc,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Please hold your NFC card near the device...',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Animated dots
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(3, (index) {
+                  return TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: 1),
+                    duration: Duration(milliseconds: 600 + (index * 200)),
+                    builder: (context, value, child) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor.withOpacity(value),
+                          shape: BoxShape.circle,
+                        ),
+                      );
+                    },
+                  );
+                }),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                NfcManager.instance.stopSession();
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.grey,
+              ),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<dynamic> _showStudentCardPopup(
+      BuildContext context, StudentCardData studentCardData) {
+    return showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black.withOpacity(0.7),
+      transitionDuration: const Duration(milliseconds: 500),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Center(
+          child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.all(28),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.white,
+                    Colors.grey.shade50,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 30,
+                    offset: const Offset(0, 15),
+                    spreadRadius: 5,
+                  ),
+                  BoxShadow(
+                    color: AppColors.primaryColor.withOpacity(0.1),
+                    blurRadius: 60,
+                    offset: const Offset(0, 20),
+                  ),
+                ],
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.8),
+                  width: 1.5,
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header with icon
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.person_pin,
+                      color: Colors.green.shade600,
+                      size: 32,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Tìm thấy',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey.shade800,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Gửi lời mời kết bạn để có thể trò chuyện',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  // Enhanced student card with hover effect
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: StudentCard(
+                      studentCardData: studentCardData,
+                      onTap: () {},
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  // Enhanced action buttons
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.grey.shade600,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: BorderSide(color: Colors.grey.shade300),
+                            ),
+                          ),
+                          child: const Text(
+                            'Close',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        flex: 3,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            // Add chat functionality here
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            elevation: 8,
+                            shadowColor:
+                                AppColors.primaryColor.withOpacity(0.4),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.chat_bubble_outline, size: 18),
+                              SizedBox(width: 8),
+                              Text(
+                                'Start Chat',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        // Enhanced multi-layered animation
+        final scaleAnimation = Tween<double>(
+          begin: 0.8,
+          end: 1.0,
+        ).animate(CurvedAnimation(
+          parent: animation,
+          curve: Curves.elasticOut,
+        ));
+
+        final fadeAnimation = Tween<double>(
+          begin: 0.0,
+          end: 1.0,
+        ).animate(CurvedAnimation(
+          parent: animation,
+          curve: const Interval(0.0, 0.7, curve: Curves.easeOutCubic),
+        ));
+
+        final slideAnimation = Tween<Offset>(
+          begin: const Offset(0, 0.3),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutBack,
+        ));
+
+        return FadeTransition(
+          opacity: fadeAnimation,
+          child: SlideTransition(
+            position: slideAnimation,
+            child: ScaleTransition(
+              scale: scaleAnimation,
+              child: child,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildUserList() {
-    return SizedBox(
-      height: 90,
+    return Container(
+      height: 100,
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         itemCount: FakeData.chatUsers.length,
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: UserBubble(user: FakeData.chatUsers[index], onTap: () {}),
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 6.0),
+            child: Material(
+              borderRadius: BorderRadius.circular(16),
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.white.withOpacity(0.8),
+                        Colors.grey.shade50.withOpacity(0.8),
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.15),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: UserBubble(
+                    user: FakeData.chatUsers[index],
+                    onTap: () {},
+                  ),
+                ),
+              ),
+            ),
           );
         },
       ),

@@ -23,4 +23,5 @@ class AppRouter {
   static const String chatSearchHistory = '/chat-search-history';
   static const String profilePage = '/profile-page';
   static const String homeSearchPage = '/home-search-page';
+  static const String nfcPage = '/nfc-page';
 }

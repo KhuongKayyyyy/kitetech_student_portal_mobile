@@ -172,9 +172,9 @@ class _HomepageState extends State<Homepage> {
             onTap: () => context.pushNamed(AppRouter.nameRecognitionPage),
           ),
           AppFunctionItem(
-            title: "Chat",
-            icon: Icons.chat,
-            onTap: () => context.pushNamed(AppRouter.chatRoomPage),
+            title: "NFC",
+            icon: Icons.nfc,
+            onTap: () => context.pushNamed(AppRouter.nfcPage),
           ),
         ],
       ),

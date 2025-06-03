@@ -15,6 +15,7 @@ import 'package:kitetech_student_portal/presentation/view/main/chat/chat_room_pa
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_search_history.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/home_search_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
+import 'package:kitetech_student_portal/presentation/view/main/home/nfc_test.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/scoreboard_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/timetable_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/profile/profile_page.dart';
@@ -108,6 +109,10 @@ class AppNavigation {
                     );
                   },
                 )),
+        GoRoute(
+            path: AppRouter.nfcPage,
+            name: AppRouter.nfcPage,
+            builder: (context, state) => const NFCPage()),
       ],
     );
   }

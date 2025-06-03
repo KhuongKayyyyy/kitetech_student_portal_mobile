@@ -11,14 +11,14 @@ import 'package:http/http.dart' as http;
 
 import 'package:nfc_manager/platform_tags.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class NFCPage extends StatefulWidget {
+  const NFCPage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<NFCPage> createState() => _NFCPageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _NFCPageState extends State<NFCPage> {
   late FToast fToast;
   bool isAvailable = false;
   String? tagData;
@@ -88,7 +88,7 @@ class _HomepageState extends State<Homepage> {
   Future<void> _fetchStudentInfo(String rfid) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.88.132:5001/api/student'),
+        Uri.parse('http://192.168.0.226:5001/api/student'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'rfid': rfid}),
       );
