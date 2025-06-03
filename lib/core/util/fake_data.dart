@@ -6,6 +6,7 @@ import 'package:kitetech_student_portal/data/model/name_recognition.dart';
 import 'package:kitetech_student_portal/data/model/news.dart';
 import 'package:kitetech_student_portal/data/model/score_data.dart';
 import 'package:kitetech_student_portal/data/model/student.dart';
+import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
 
 class FakeData {
   static final Student student = Student(
@@ -13,6 +14,18 @@ class FakeData {
     email: 'khuongnd@kitetech.vn',
     studentId: '52100973',
     major: 'Computer Science',
+  );
+
+  static final StudentCardData studentCardData = StudentCardData(
+    studentName: 'Nguyen Dat Khuong',
+    studentId: '52100973',
+    department: 'Computer Science',
+    classId: '52100973',
+    major: 'Computer Science',
+    birthDate: '1990-01-01',
+    gender: 'Male',
+    imageUrl: '',
+    address: '',
   );
 
   static final List<News> news = [

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/app_function_item.dart';

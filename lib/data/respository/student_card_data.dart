@@ -1,21 +1,23 @@
 class StudentCardData {
   String studentName;
   String studentId;
-  String studentEmail;
-  String studentPhone;
-  String studentAddress;
-  String studentCity;
-  String studentState;
   String imageUrl;
+  String classId;
+  String major;
+  String department;
+  String birthDate;
+  String gender;
+  String address;
 
   StudentCardData({
     required this.studentName,
     required this.studentId,
-    required this.studentEmail,
-    required this.studentPhone,
-    required this.studentAddress,
-    required this.studentCity,
-    required this.studentState,
     required this.imageUrl,
+    required this.classId,
+    required this.major,
+    required this.department,
+    required this.birthDate,
+    required this.gender,
+    required this.address,
   });
 }

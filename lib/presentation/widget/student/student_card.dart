@@ -87,12 +87,13 @@ class _StudentCardState extends State<StudentCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    _buildInfoRow(Icons.email, widget.studentCardData.major),
                     _buildInfoRow(
-                        Icons.email, widget.studentCardData.studentEmail),
+                        Icons.phone, widget.studentCardData.department),
                     _buildInfoRow(
-                        Icons.phone, widget.studentCardData.studentPhone),
-                    _buildInfoRow(Icons.location_on,
-                        "${widget.studentCardData.studentAddress}, ${widget.studentCardData.studentCity}, ${widget.studentCardData.studentState}"),
+                        Icons.phone, widget.studentCardData.birthDate),
+                    _buildInfoRow(Icons.phone, widget.studentCardData.gender),
+                    _buildInfoRow(Icons.phone, widget.studentCardData.address),
                   ],
                 ),
               ),

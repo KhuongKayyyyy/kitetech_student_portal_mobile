@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/constant/app_global.dart';
-import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/string_util.dart';
 import 'package:kitetech_student_portal/data/model/app_feature_model.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/feature_search_item.dart';
@@ -46,7 +44,6 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
           final title = function.title.toLowerCase();
           final searchTerm = query.toLowerCase();
 
-          // Remove Vietnamese diacritics for better search matching
           final normalizedTitle = StringUtil.removeDiacritics(title);
           final normalizedSearchTerm = StringUtil.removeDiacritics(searchTerm);
 
@@ -62,43 +59,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 30,
-        title: Hero(
-          tag: "app-search",
-          child: Material(
-            color: Colors.transparent,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300]!),
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: TextField(
-                controller: _searchController,
-                focusNode: _focusNode,
-                onChanged: _performSearch,
-                cursorColor: AppColors.primaryColor,
-                decoration: InputDecoration(
-                  hintText: "Tìm kiếm chức năng ...",
-                  prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            _searchController.clear();
-                            _performSearch('');
-                          },
-                        )
-                      : null,
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        title: _buildSearchBar(),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,7 +106,8 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 15),
                     itemCount: _searchResults.length,
                     itemBuilder: (context, index) {
                       final feature = _searchResults[index];
@@ -154,6 +116,47 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
                   ),
           ),
         ],
+      ),
+    );
+  }
+
+  Hero _buildSearchBar() {
+    return Hero(
+      tag: "app-search",
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey[300]!),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: TextField(
+            controller: _searchController,
+            focusNode: _focusNode,
+            onChanged: _performSearch,
+            cursorColor: AppColors.primaryColor,
+            decoration: InputDecoration(
+              hintText: "Tìm kiếm chức năng ...",
+              prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+              suffixIcon: _searchController.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      color: AppColors.primaryColor,
+                      onPressed: () {
+                        _searchController.clear();
+                        _performSearch('');
+                      },
+                    )
+                  : null,
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 15,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -100,15 +100,17 @@ class _HomepageState extends State<Homepage> {
             print('Student Info: $studentInfo');
           }
           _showToast(StudentCardData(
-              studentName: "Nguyen Dat Khuong",
-              studentId: "52100973",
-              studentEmail: "zzkhngzz@gmail.com",
-              studentPhone: "0907827157",
-              studentAddress: "123 Main St",
-              studentCity: "Hanoi",
-              studentState: "Vietnam",
-              imageUrl:
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXXckRlC33zt7zHBLpEEEeqY_MGIn89LOdGw&s"));
+            studentName: "Nguyen Dat Khuong",
+            studentId: "52100973",
+            imageUrl:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXXckRlC33zt7zHBLpEEEeqY_MGIn89LOdGw&s",
+            classId: "52100973",
+            major: "CNTT",
+            department: "CNTT",
+            birthDate: "2002-01-01",
+            gender: "Male",
+            address: "123 Main St",
+          ));
         });
       } else {
         setState(() {

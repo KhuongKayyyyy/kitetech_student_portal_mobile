@@ -44,5 +44,20 @@ class AppFeature {
       icon: Icons.chat,
       route: AppRouter.chatRoomPage,
     ),
+    AppFeatureModel(
+      title: 'Quét QR',
+      icon: Icons.qr_code,
+      route: AppRouter.nameRecognitionQrScanner,
+    ),
+    AppFeatureModel(
+      title: 'Nhập pin',
+      icon: Icons.pin,
+      route: AppRouter.nameRecognitionPinPage,
+    ),
+    AppFeatureModel(
+      title: "Lịch sử điểm danh",
+      icon: Icons.history,
+      route: AppRouter.nameRecognitionHistoryPage,
+    ),
   ];
 }

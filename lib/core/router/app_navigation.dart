@@ -96,7 +96,18 @@ class AppNavigation {
         GoRoute(
             path: AppRouter.homeSearchPage,
             name: AppRouter.homeSearchPage,
-            builder: (context, state) => const HomeSearchPage()),
+            builder: (context, state) => const HomeSearchPage(),
+            pageBuilder: (context, state) => CustomTransitionPage(
+                  key: state.pageKey,
+                  child: const HomeSearchPage(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                )),
       ],
     );
   }
@@ -112,7 +123,18 @@ class AppNavigation {
         GoRoute(
             path: AppRouter.chatHomeSearch,
             name: AppRouter.chatHomeSearch,
-            builder: (context, state) => const ChatHomeSearch()),
+            builder: (context, state) => const ChatHomeSearch(),
+            pageBuilder: (context, state) => CustomTransitionPage(
+                  key: state.pageKey,
+                  child: const ChatHomeSearch(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                )),
         GoRoute(
             path: AppRouter.chatSearchHistory,
             name: AppRouter.chatSearchHistory,
