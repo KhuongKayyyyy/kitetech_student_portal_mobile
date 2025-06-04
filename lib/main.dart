@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/constant/app_global.dart';
 import 'package:kitetech_student_portal/core/router/app_navigation.dart';
 import 'package:kitetech_student_portal/core/theme/app_theme.dart';
+import 'package:kitetech_student_portal/data/respository/student_repository.dart';
+import 'package:kitetech_student_portal/presentation/bloc/authentication/authentication_bloc.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -26,13 +29,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      scaffoldMessengerKey: AppGlobal.scaffoldMessengerKey,
-      debugShowCheckedModeBanner: false,
-      title: "KiteTech Student Portal",
-      theme: AppTheme.theme,
-      routerConfig: AppNavigation.router,
-      builder: EasyLoading.init(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => AuthenticationBloc(StudentRepository())),
+      ],
+      child: MaterialApp.router(
+        scaffoldMessengerKey: AppGlobal.scaffoldMessengerKey,
+        debugShowCheckedModeBanner: false,
+        title: "KiteTech Student Portal",
+        theme: AppTheme.theme,
+        routerConfig: AppNavigation.router,
+        builder: EasyLoading.init(),
+      ),
     );
   }
 }

@@ -50,6 +50,7 @@ dependencies:
   flutter_chat_core: ^0.0.6
   barcode_widget: ^2.0.4
   flutter_bloc: ^9.1.1
+  bloc: ^9.0.0
 
 dev_dependencies:
   flutter_test:

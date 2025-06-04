@@ -5,11 +5,18 @@ sealed class AuthenticationState {}
 
 final class AuthenticationInitial extends AuthenticationState {}
 
-final class AuthenticationStateLoggedIn extends AuthenticationState {
-  final String email;
-  final String password;
+final class AuthenticationStateLoading extends AuthenticationState {}
 
-  AuthenticationStateLoggedIn({required this.email, required this.password});
+final class AuthenticationStateError extends AuthenticationState {
+  final String message;
+
+  AuthenticationStateError({required this.message});
+}
+
+final class AuthenticationStateLoggedIn extends AuthenticationState {
+  final AppUser appUser;
+
+  AuthenticationStateLoggedIn({required this.appUser});
 }
 
 final class AuthenticationStateLoggedOut extends AuthenticationState {}

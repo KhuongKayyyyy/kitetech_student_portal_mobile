@@ -8,7 +8,7 @@ import 'package:kitetech_student_portal/presentation/view/add_on/name_recognitio
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recogniton_pin_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/news_read_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/student_detail_information.dart';
-import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
+import 'package:kitetech_student_portal/presentation/view/authentication/authentication_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_search.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_room_page.dart';
@@ -189,7 +189,7 @@ class AppNavigation {
       GoRoute(
         path: AppRouter.authentication,
         name: AppRouter.authentication,
-        builder: (context, state) => const LoginPage(),
+        builder: (context, state) => const AuthenticationPage(),
       ),
     ];
   }

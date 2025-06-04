@@ -8,7 +8,7 @@ import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
-import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
+import 'package:kitetech_student_portal/data/model/student_card_data.dart';
 import 'package:kitetech_student_portal/presentation/widget/chat/chat_room_item.dart';
 import 'package:kitetech_student_portal/presentation/widget/chat/chat_search_bar.dart';
 import 'package:kitetech_student_portal/presentation/widget/chat/user_bubble.dart';

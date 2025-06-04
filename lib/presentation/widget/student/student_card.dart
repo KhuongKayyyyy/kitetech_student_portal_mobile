@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
+import 'package:kitetech_student_portal/data/model/student_card_data.dart';
 
 class StudentCard extends StatefulWidget {
   final StudentCardData studentCardData;

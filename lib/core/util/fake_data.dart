@@ -6,7 +6,7 @@ import 'package:kitetech_student_portal/data/model/name_recognition.dart';
 import 'package:kitetech_student_portal/data/model/news.dart';
 import 'package:kitetech_student_portal/data/model/score_data.dart';
 import 'package:kitetech_student_portal/data/model/student.dart';
-import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
+import 'package:kitetech_student_portal/data/model/student_card_data.dart';
 
 class FakeData {
   static final Student student = Student(

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
-import 'package:kitetech_student_portal/presentation/view/authentication/login.dart';
+import 'package:kitetech_student_portal/data/model/student_card_data.dart';
+import 'package:kitetech_student_portal/presentation/view/authentication/authentication_page.dart';
 import 'package:kitetech_student_portal/presentation/widget/student/student_card.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:http/http.dart' as http;
@@ -194,7 +194,8 @@ class _NFCPageState extends State<NFCPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const AuthenticationPage()),
                 );
               },
               child: const Text("Login"),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:kitetech_student_portal/core/constant/app_image.dart';
-import 'package:kitetech_student_portal/data/respository/student_card_data.dart';
+import 'package:kitetech_student_portal/data/model/student_card_data.dart';
 
 class StudentDetailCard extends StatelessWidget {
   final Function()? onTap;
