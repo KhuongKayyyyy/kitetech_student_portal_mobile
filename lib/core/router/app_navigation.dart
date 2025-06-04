@@ -41,7 +41,7 @@ class AppNavigation {
 
   static final GoRouter router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: AppRouter.home,
+    initialLocation: AppRouter.authentication,
     routes: [
       _buildMainShellRoute(),
       ..._buildAuthenticationBranch(),

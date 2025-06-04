@@ -97,7 +97,7 @@ class _HomepageState extends State<Homepage> {
     return SliverToBoxAdapter(
       child: InkWell(
           onTap: () => context.pushNamed(AppRouter.homeSearchPage),
-          child: Hero(tag: "app-search", child: AppSeachBar())),
+          child: const Hero(tag: "app-search", child: AppSeachBar())),
     );
   }
 

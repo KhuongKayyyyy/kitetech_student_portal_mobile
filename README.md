@@ -1,15 +1,49 @@
-# kitetech_student_portal
+# Kitetech Student Portal
 
-A new Flutter project.
+A comprehensive Flutter application for managing student information and services at Kitetech University.
+
+## Features
+
+- **Student Card Management**: Digital student ID cards with barcode functionality
+- **Student Information Display**: Comprehensive student profile viewing
+- **Interactive UI**: Modern design with animations and gradients
+- **Chat System**: Communication platform for students
+- **Responsive Design**: Optimized for mobile devices
+
+## Project Structure
+
+- `lib/presentation/widget/student/` - Student-related UI components
+  - `student_card.dart` - Animated student card with gradient design
+  - `student_detail_card.dart` - Detailed student information card with barcode
+- `lib/presentation/view/main/chat/` - Chat functionality
+- `lib/data/repository/` - Data models and repository patterns
+
+## Key Components
+
+### StudentCard
+An animated, gradient-styled card displaying basic student information with tap animations.
+
+### StudentDetailCard
+A formal student ID card layout with institutional branding, student photo, and barcode generation.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This is a Flutter application for Kitetech University's student portal system.
 
-A few resources to get you started if this is your first Flutter project:
+### Prerequisites
+- Flutter SDK
+- Dart SDK
+- Android Studio / VS Code
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Installation
+1. Clone the repository
+2. Run `flutter pub get` to install dependencies
+3. Run `flutter run` to start the application
+
+## Dependencies
+
+- `flutter/material.dart` - Material Design components
+- `barcode_widget` - Barcode generation functionality
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,

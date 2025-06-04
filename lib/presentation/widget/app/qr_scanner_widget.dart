@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
+import 'package:kitetech_student_portal/core/router/app_router.dart';
 
 class QRScannerWidget extends StatelessWidget {
   const QRScannerWidget({super.key});
@@ -8,7 +10,9 @@ class QRScannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        context.pushNamed(AppRouter.nameRecognitionQrScanner);
+      },
       child: Hero(
         tag: 'chatbox',
         child: Container(

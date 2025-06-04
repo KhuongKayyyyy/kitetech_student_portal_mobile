@@ -49,6 +49,7 @@ dependencies:
   flutter_chat_ui: ^1.6.15
   flutter_chat_core: ^0.0.6
   barcode_widget: ^2.0.4
+  flutter_bloc: ^9.1.1
 
 dev_dependencies:
   flutter_test:
