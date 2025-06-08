@@ -1,7 +1,9 @@
 // ignore: depend_on_referenced_packages
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:kitetech_student_portal/data/model/chat_request.dart';
 import 'package:kitetech_student_portal/data/model/class.dart';
 import 'package:kitetech_student_portal/data/model/enums/NameRecognitionEnum.dart';
+import 'package:kitetech_student_portal/data/model/enums/chat_request_status.dart';
 import 'package:kitetech_student_portal/data/model/name_recognition.dart';
 import 'package:kitetech_student_portal/data/model/news.dart';
 import 'package:kitetech_student_portal/data/model/score_data.dart';
@@ -473,5 +475,59 @@ class FakeData {
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
       lastSeen: 0,
     ),
+  ];
+
+  static final List<ChatRequest> sentRequest = [
+    ChatRequest(
+        id: "1",
+        sentUSerId: "1",
+        receiveUserId: "2",
+        requestStatus: ChatRequestStatus.PENDING),
+    ChatRequest(
+        id: "2",
+        sentUSerId: "1",
+        receiveUserId: "3",
+        requestStatus: ChatRequestStatus.PENDING),
+    ChatRequest(
+        id: "3",
+        sentUSerId: "1",
+        receiveUserId: "4",
+        requestStatus: ChatRequestStatus.PENDING)
+  ];
+
+  static final List<ChatRequest> receivedRequest = [
+    ChatRequest(
+        id: "1",
+        sentUSerId: "2",
+        receiveUserId: "1",
+        requestStatus: ChatRequestStatus.PENDING),
+    ChatRequest(
+        id: "2",
+        sentUSerId: "3",
+        receiveUserId: "1",
+        requestStatus: ChatRequestStatus.PENDING),
+    ChatRequest(
+        id: "3",
+        sentUSerId: "4",
+        receiveUserId: "1",
+        requestStatus: ChatRequestStatus.PENDING),
+  ];
+
+  static final List<ChatRequest> approvedRequest = [
+    ChatRequest(
+        id: "1",
+        sentUSerId: "1",
+        receiveUserId: "2",
+        requestStatus: ChatRequestStatus.APPROVED),
+    ChatRequest(
+        id: "1",
+        sentUSerId: "1",
+        receiveUserId: "2",
+        requestStatus: ChatRequestStatus.APPROVED),
+    ChatRequest(
+        id: "1",
+        sentUSerId: "1",
+        receiveUserId: "2",
+        requestStatus: ChatRequestStatus.APPROVED),
   ];
 }

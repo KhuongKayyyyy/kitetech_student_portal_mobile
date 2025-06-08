@@ -48,6 +48,7 @@ class _ChatHomeSearchState extends State<ChatHomeSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leadingWidth: 30,
         title: Hero(

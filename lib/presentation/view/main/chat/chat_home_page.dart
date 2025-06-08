@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
+import 'package:kitetech_student_portal/core/network/api.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
 import 'package:kitetech_student_portal/data/model/student_card_data.dart';
@@ -60,52 +61,13 @@ class _ChatHomePageState extends State<ChatHomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {
-                tagData = null;
-                errorMessage = null;
-                studentInfo = null;
-                foundStudentCard = null;
-              });
-              NfcManager.instance.startSession(
-                onDiscovered: (NfcTag tag) async {
-                  final NfcA? nfca = NfcA.from(tag);
-                  if (nfca == null) {
-                    NfcManager.instance
-                        .stopSession(errorMessage: 'Not an NFC-A tag');
-                    return;
-                  }
-                  Uint8List uidBytes = nfca.identifier;
-
-                  String uidHex = uidBytes
-                      .map((b) => b.toRadixString(16).padLeft(2, '0'))
-                      .join('')
-                      .toUpperCase();
-                  await _fetchStudentInfo(uidHex);
-
-                  setState(() {
-                    tagData = tag.data.toString();
-                    studentRFID = uidHex;
-                  });
-
-                  NfcManager.instance.stopSession();
-                  // Pop the NFC reader dialog
-                  // ignore: use_build_context_synchronously
-                  context.pop();
-                  // Show student card popup
-                  if (foundStudentCard != null) {
-                    // ignore: use_build_context_synchronously
-                    _showStudentCardPopup(context, foundStudentCard!);
-                  }
-                },
-                onError: (error) async {
-                  setState(() {
-                    errorMessage = error.toString();
-                  });
-                  NfcManager.instance
-                      .stopSession(errorMessage: error.toString());
-                },
-              );
-              _showNFCReader(context);
+              context.pushNamed(AppRouter.checkChatRequestPage);
+            },
+            icon: const Icon(Icons.group_add),
+          ),
+          IconButton(
+            onPressed: () {
+              _showAddUserDialog(context);
             },
             icon: const Icon(Icons.add),
           ),
@@ -149,10 +111,211 @@ class _ChatHomePageState extends State<ChatHomePage> {
     );
   }
 
+  Future<void> _showAddUserDialog(BuildContext context) {
+    final TextEditingController studentIdController = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.person_add,
+                  color: AppColors.primaryColor, size: 24),
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              'Thêm người dùng',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Nhập mã số sinh viên để thêm vào danh sách chat',
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 14,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: studentIdController,
+              decoration: InputDecoration(
+                labelText: 'Mã số sinh viên',
+                labelStyle: TextStyle(color: AppColors.primaryColor),
+                hintText: 'Ví dụ: 52100973',
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                prefixIcon: Container(
+                  margin: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(Icons.badge,
+                      color: AppColors.primaryColor, size: 20),
+                ),
+                suffixIcon: isAvailable
+                    ? Container(
+                        margin: const EdgeInsets.all(4),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            setState(() {
+                              tagData = null;
+                              errorMessage = null;
+                              studentInfo = null;
+                              foundStudentCard = null;
+                            });
+                            NfcManager.instance.startSession(
+                              onDiscovered: (NfcTag tag) async {
+                                final NfcA? nfca = NfcA.from(tag);
+                                if (nfca == null) {
+                                  NfcManager.instance.stopSession(
+                                      errorMessage: 'Not an NFC-A tag');
+                                  return;
+                                }
+                                Uint8List uidBytes = nfca.identifier;
+
+                                String uidHex = uidBytes
+                                    .map((b) =>
+                                        b.toRadixString(16).padLeft(2, '0'))
+                                    .join('')
+                                    .toUpperCase();
+                                await _fetchStudentInfo(uidHex);
+
+                                setState(() {
+                                  tagData = tag.data.toString();
+                                  studentRFID = uidHex;
+                                });
+
+                                NfcManager.instance.stopSession();
+                                // Pop the NFC reader dialog
+                                // ignore: use_build_context_synchronously
+                                context.pop();
+                                // Show student card popup
+                                if (foundStudentCard != null) {
+                                  // ignore: use_build_context_synchronously
+                                  _showStudentCardPopup(
+                                      context, foundStudentCard!);
+                                }
+                              },
+                              onError: (error) async {
+                                setState(() {
+                                  errorMessage = error.toString();
+                                });
+                                NfcManager.instance.stopSession(
+                                    errorMessage: error.toString());
+                              },
+                            );
+                            _showNFCReader(context);
+                          },
+                          icon: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Icon(Icons.nfc,
+                                color: AppColors.primaryColor, size: 20),
+                          ),
+                          tooltip: 'Quét NFC để thêm người dùng',
+                        ),
+                      )
+                    : null,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.grey[300]!, width: 1.5),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.grey[300]!, width: 1.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 2),
+                ),
+                filled: true,
+                fillColor: Colors.grey[50],
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              ),
+              keyboardType: TextInputType.number,
+              autofocus: true,
+            ),
+          ],
+        ),
+        actionsPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: Text(
+              'Hủy',
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            onPressed: () {
+              if (studentIdController.text.trim().isNotEmpty) {
+                // Handle add user logic here
+                Navigator.of(context).pop();
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryColor,
+              foregroundColor: Colors.white,
+              elevation: 2,
+              shadowColor: AppColors.primaryColor.withOpacity(0.3),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              'Thêm',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _fetchStudentInfo(String rfid) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.226:5001/api/student'),
+        Uri.parse('${APIRoute.baseUrlTest}/api/student'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'rfid': rfid}),
       );

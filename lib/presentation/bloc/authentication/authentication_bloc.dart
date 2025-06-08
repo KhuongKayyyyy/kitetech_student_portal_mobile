@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:kitetech_student_portal/data/model/app_user.dart';
 import 'package:kitetech_student_portal/data/respository/student_repository.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 
 part 'authentication_event.dart';

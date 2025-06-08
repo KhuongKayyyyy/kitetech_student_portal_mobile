@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/presentation/view/add_on/check_chat_request_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_history_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_qr_scanner.dart';
@@ -41,7 +42,7 @@ class AppNavigation {
 
   static final GoRouter router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: AppRouter.authentication,
+    initialLocation: AppRouter.home,
     routes: [
       _buildMainShellRoute(),
       ..._buildAuthenticationBranch(),
@@ -144,6 +145,10 @@ class AppNavigation {
             path: AppRouter.chatSearchHistory,
             name: AppRouter.chatSearchHistory,
             builder: (context, state) => const ChatSearchHistory()),
+        GoRoute(
+            path: AppRouter.checkChatRequestPage,
+            name: AppRouter.checkChatRequestPage,
+            builder: (context, state) => const CheckChatRequestPage()),
       ],
     );
   }
