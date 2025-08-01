@@ -24,8 +24,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   @override
   void initState() {
     super.initState();
-    _emailController.text = 'khuong';
-    _passwordController.text = '1123';
+    _emailController.text = '52100973';
+    _passwordController.text = '52100973';
   }
 
   @override
@@ -39,16 +39,15 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       bloc: context.read<AuthenticationBloc>(),
-      listener: (context, state) {
-        if (state is AuthenticationStateLoggedIn) {
-          // context.read<AuthenticationBloc>().add(AuthenticationEventLogout());
+      listener: (context, authenState) {
+        if (authenState is AuthenticationStateLoggedIn) {
           context.go(AppRouter.home);
           EasyLoading.showSuccess("Đăng nhập thành công");
         }
-        if (state is AuthenticationStateError) {
-          EasyLoading.showError(state.message);
+        if (authenState is AuthenticationStateError) {
+          EasyLoading.showError(authenState.message);
         }
-        if (state is AuthenticationStateLoading) {
+        if (authenState is AuthenticationStateLoading) {
           EasyLoading.showInfo("Đang đăng nhập...");
         }
       },

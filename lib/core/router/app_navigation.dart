@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kitetech_student_portal/core/network/api.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
 import 'package:kitetech_student_portal/data/model/name_recognition.dart';
+import 'package:kitetech_student_portal/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/check_chat_request_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_confirm_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_history_page.dart';
@@ -44,7 +48,26 @@ class AppNavigation {
 
   static final GoRouter router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: AppRouter.home,
+    initialLocation: AppRouter.authentication,
+    redirect: (context, state) async {
+      const FlutterSecureStorage secureStorage = FlutterSecureStorage();
+      final accessToken = await secureStorage.read(key: APIRoute.accessToken);
+      final refreshToken = await secureStorage.read(key: APIRoute.refreshToken);
+
+      final bool isAuthenticated = accessToken != null && refreshToken != null;
+
+      if (isAuthenticated) {
+        if (state.matchedLocation == AppRouter.authentication) {
+          return AppRouter.home;
+        }
+      } else {
+        if (state.matchedLocation != AppRouter.authentication) {
+          return AppRouter.authentication;
+        }
+      }
+
+      return null;
+    },
     routes: [
       _buildMainShellRoute(),
       ..._buildAuthenticationBranch(),

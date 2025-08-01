@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:kitetech_student_portal/presentation/widget/student/student_detail_card.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -162,44 +165,56 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildLogoutSection() {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      width: double.infinity,
-      child: InkWell(
-        onTap: () {},
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.red.shade50,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.red.shade200),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.logout,
-                color: Colors.red.shade600,
-                size: 20,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Đăng xuất',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red.shade600,
+    return BlocListener<AuthenticationBloc, AuthenticationState>(
+      listener: (context, authenState) {
+        if (authenState is AuthenticationStateLoggedOut) {
+          EasyLoading.dismiss();
+          context.go(AppRouter.authentication);
+        } else if (authenState is AuthenticationStateLoading) {
+          EasyLoading.show(status: 'Đang đăng xuất...');
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        width: double.infinity,
+        child: InkWell(
+          onTap: () {
+            context.read<AuthenticationBloc>().add(AuthenticationEventLogout());
+          },
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.red.shade50,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.red.shade200),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
                 ),
-              ),
-            ],
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.logout,
+                  color: Colors.red.shade600,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Đăng xuất',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red.shade600,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

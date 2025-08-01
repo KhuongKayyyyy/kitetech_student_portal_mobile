@@ -42,37 +42,45 @@ class StudentHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                student.name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  student.name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                student.studentId,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
+                const SizedBox(height: 8),
+                Text(
+                  student.studentId,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                student.major,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
+                const SizedBox(height: 8),
+                Text(
+                  student.major,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const Spacer(),
+          const SizedBox(width: 10),
           Image.asset(
             AppImage.logo,
             height: 50,

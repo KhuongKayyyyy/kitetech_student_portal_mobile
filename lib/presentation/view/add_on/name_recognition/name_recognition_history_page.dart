@@ -61,6 +61,7 @@ class _NameRecognitionHistoryPageState
 
   ListView _buildItemList({required List<NameRecognition> nameRecognitions}) {
     return ListView.builder(
+      padding: EdgeInsets.zero,
       itemBuilder: (context, index) => NameRecognitionHistoryItem(
         nameRecognition: nameRecognitions[index],
       ),
