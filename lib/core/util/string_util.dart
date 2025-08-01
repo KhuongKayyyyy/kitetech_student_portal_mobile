@@ -11,7 +11,9 @@ class StringUtil {
     ];
 
     String weekday = weekdays[date.weekday % 7];
-    return '$weekday, ${date.day}/${date.month}/${date.year}';
+    String hour = date.hour.toString().padLeft(2, '0');
+    String minute = date.minute.toString().padLeft(2, '0');
+    return '$weekday, ${date.day}/${date.month}/${date.year} $hour:$minute';
   }
 
   static String removeDiacritics(String str) {

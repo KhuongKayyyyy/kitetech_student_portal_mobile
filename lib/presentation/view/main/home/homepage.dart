@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/data/client/api_client.dart';
+import 'package:kitetech_student_portal/data/model/name_recognition.dart';
+import 'package:kitetech_student_portal/data/respository/name_recognition_repository.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/app_function_item.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/app_seach_bar.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/news_banner_item.dart';
@@ -88,6 +91,17 @@ class _HomepageState extends State<Homepage> {
         //
         _buildFeatureSection(context),
 
+        SliverToBoxAdapter(
+          child: ElevatedButton(
+            onPressed: () async {
+              final repo = NameRecognitionRepository(ApiClient());
+              final result =
+                  await repo.getListNameRecognitionByStudentID('52100973');
+              print(result);
+            },
+            child: const Text('Create'),
+          ),
+        ),
         _buildNewsSection(),
       ],
     );

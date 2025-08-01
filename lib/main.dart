@@ -7,6 +7,7 @@ import 'package:kitetech_student_portal/core/router/app_navigation.dart';
 import 'package:kitetech_student_portal/core/theme/app_theme.dart';
 import 'package:kitetech_student_portal/data/respository/student_repository.dart';
 import 'package:kitetech_student_portal/presentation/bloc/authentication/authentication_bloc.dart';
+import 'package:kitetech_student_portal/presentation/bloc/name_recognition/name_recognition_bloc.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (context) => AuthenticationBloc(StudentRepository())),
+        BlocProvider(create: (context) => NameRecognitionBloc()),
       ],
       child: MaterialApp.router(
         scaffoldMessengerKey: AppGlobal.scaffoldMessengerKey,

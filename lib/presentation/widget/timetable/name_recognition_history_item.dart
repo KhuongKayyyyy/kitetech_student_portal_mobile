@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 import 'package:kitetech_student_portal/core/util/string_util.dart';
-import 'package:kitetech_student_portal/data/model/enums/NameRecognitionEnum.dart';
+
 import 'package:kitetech_student_portal/data/model/name_recognition.dart';
 
 class NameRecognitionHistoryItem extends StatelessWidget {
@@ -26,25 +26,25 @@ class NameRecognitionHistoryItem extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(10),
                     topLeft: Radius.circular(10))),
-            child: Icon(
-              nameRecognition.type == NameRecognitionEnum.classRecognition
-                  ? Icons.school
-                  : Icons.event,
+            child: const Icon(
+              Icons.school,
               color: Colors.white,
             ),
           ),
           const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                nameRecognition.name,
-                style: AppTextStyle.bodyBold,
-              ),
-              Text(StringUtil.formatDate(nameRecognition.date)),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  nameRecognition.name ?? '',
+                  style: AppTextStyle.bodyBold,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(StringUtil.formatDate(nameRecognition.time)),
+              ],
+            ),
           ),
-          const Spacer(),
           Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(

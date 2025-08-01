@@ -14,7 +14,8 @@ class AppRouter {
   static const String nameRecognitionPinPage = '/name-recognition-pin-page';
   static const String studentDetailInformation = '/student-detail-information';
   static const String nameRecognitionQrScanner = '/name-recognition-qr-scanner';
-
+  static const String nameRecognitionConfirmPage =
+      '/name-recognition-confirm-page';
   static const String scoreboardPage = '/scoreboard-page';
 
   static const String chatRoomPage = '/chat-room-page';

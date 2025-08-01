@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/data/model/name_recognition.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/check_chat_request_page.dart';
+import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_confirm_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_history_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_qr_scanner.dart';
@@ -212,6 +214,15 @@ class AppNavigation {
           builder: (context, state) => NameRecognitionQrScanner(
                 student: FakeData.student,
               )),
+      GoRoute(
+          path: AppRouter.nameRecognitionConfirmPage,
+          name: AppRouter.nameRecognitionConfirmPage,
+          builder: (context, state) {
+            final extra = state.extra as NameRecognition;
+            return NameRecognitionConfirmPage(
+              nameRecognition: extra,
+            );
+          }),
       GoRoute(
           path: AppRouter.chatRoomPage,
           name: AppRouter.chatRoomPage,

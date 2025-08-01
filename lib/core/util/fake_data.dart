@@ -189,15 +189,51 @@ class FakeData {
   static final List<NameRecognition> nameRecognitions = [
     NameRecognition(
       id: '1',
-      name: 'Điểm danh lớp OOP',
-      date: DateTime(2025, 5, 1),
-      type: NameRecognitionEnum.classRecognition,
+      classSessionID: '1',
+      studentID: '1',
+      time: DateTime.now(),
     ),
     NameRecognition(
       id: '2',
-      name: 'Điểm danh sự kiện thể thao',
-      date: DateTime(2025, 5, 1),
-      type: NameRecognitionEnum.eventRecognition,
+      classSessionID: '2',
+      studentID: '2',
+      time: DateTime.now(),
+    ),
+    NameRecognition(
+      id: '1',
+      classSessionID: '1',
+      studentID: '1',
+      time: DateTime.now(),
+    ),
+    NameRecognition(
+      id: '2',
+      classSessionID: '2',
+      studentID: '2',
+      time: DateTime.now(),
+    ),
+    NameRecognition(
+      id: '1',
+      classSessionID: '1',
+      studentID: '1',
+      time: DateTime.now(),
+    ),
+    NameRecognition(
+      id: '2',
+      classSessionID: '2',
+      studentID: '2',
+      time: DateTime.now(),
+    ),
+    NameRecognition(
+      id: '1',
+      classSessionID: '1',
+      studentID: '1',
+      time: DateTime.now(),
+    ),
+    NameRecognition(
+      id: '2',
+      classSessionID: '2',
+      studentID: '2',
+      time: DateTime.now(),
     ),
   ];
 

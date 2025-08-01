@@ -21,7 +21,7 @@ class _NameRecognitionPageState extends State<NameRecognitionPage> {
           style: AppTextStyle.title,
         ),
         // ignore: deprecated_member_use
-        backgroundColor: AppColors.primaryColor.withOpacity(0.2),
+        backgroundColor: AppColors.primaryColor.withAlpha(51),
         centerTitle: true,
       ),
       body: Column(
@@ -50,7 +50,7 @@ class _NameRecognitionPageState extends State<NameRecognitionPage> {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: AppColors.primaryColor.withOpacity(0.2),
+          color: AppColors.primaryColor.withAlpha(51),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(

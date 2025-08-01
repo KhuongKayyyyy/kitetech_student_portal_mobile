@@ -51,6 +51,7 @@ dependencies:
   barcode_widget: ^2.0.4
   flutter_bloc: ^9.1.1
   bloc: ^9.0.0
+  skeletonizer: ^2.1.0+1
 
 dev_dependencies:
   flutter_test:
