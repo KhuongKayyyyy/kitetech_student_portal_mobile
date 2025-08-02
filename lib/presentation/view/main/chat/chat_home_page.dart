@@ -161,6 +161,40 @@ class _ChatHomePageState extends State<ChatHomePage> {
                   bloc: context.read<MessageRoomBloc>(),
                   builder: (context, mrState) {
                     if (mrState is MessageRoomStateLoaded) {
+                      if (mrState.messageRooms.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.chat_bubble_outline,
+                                  size: 64,
+                                  color: Colors.grey[400],
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'Bạn chưa có cuộc trò chuyện nào',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Hãy bắt đầu bằng cách thêm bạn bè để trò chuyện',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
                       return _buildChatRoomList(mrState.messageRooms);
                     } else if (mrState is MessageRoomStateError) {
                       return Text(mrState.message);
