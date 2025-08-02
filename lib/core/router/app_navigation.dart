@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/network/api.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/data/model/message_room.dart';
 import 'package:kitetech_student_portal/data/model/name_recognition.dart';
-import 'package:kitetech_student_portal/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/check_chat_request_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_confirm_page.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/name_recognition/name_recognition_history_page.dart';
@@ -27,8 +26,6 @@ import 'package:kitetech_student_portal/presentation/view/main/home/scoreboard_p
 import 'package:kitetech_student_portal/presentation/view/main/home/timetable_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/profile/profile_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main_wrapper/main_wrapper.dart';
-// ignore: depend_on_referenced_packages
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class AppNavigation {
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -250,8 +247,12 @@ class AppNavigation {
           path: AppRouter.chatRoomPage,
           name: AppRouter.chatRoomPage,
           builder: (context, state) => ChatRoomPage(
-                user: state.extra as types.User,
+                messageRoom: state.extra as MessageRoom,
               )),
+      // GoRoute(
+      //     path: AppRouter.testChatPage,
+      //     name: AppRouter.testChatPage,
+      //     builder: (context, state) => const TestChatScreen()),
     ];
   }
 }

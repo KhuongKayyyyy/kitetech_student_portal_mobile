@@ -5,7 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/data/client/api_client.dart';
 import 'package:kitetech_student_portal/data/model/student.dart';
+import 'package:kitetech_student_portal/data/respository/chat_user_repository.dart';
+import 'package:kitetech_student_portal/data/respository/message_room_repository.dart';
 import 'package:kitetech_student_portal/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/app_function_item.dart';
 import 'package:kitetech_student_portal/presentation/widget/app/app_seach_bar.dart';
@@ -113,7 +116,12 @@ class _HomepageState extends State<Homepage> {
 
         SliverToBoxAdapter(
           child: ElevatedButton(
-            onPressed: () async {},
+            onPressed: () async {
+              final repo = MessageRoomRepository(ApiClient());
+              final messageRooms =
+                  await repo.getMessageRoomsByUserName('52100973');
+              print(messageRooms);
+            },
             child: const Text('Create'),
           ),
         ),

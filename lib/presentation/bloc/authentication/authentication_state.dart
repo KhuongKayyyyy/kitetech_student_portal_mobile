@@ -1,7 +1,9 @@
 part of 'authentication_bloc.dart';
 
 @immutable
-sealed class AuthenticationState {}
+sealed class AuthenticationState {
+  get user => null;
+}
 
 final class AuthenticationInitial extends AuthenticationState {}
 

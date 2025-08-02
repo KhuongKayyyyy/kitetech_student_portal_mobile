@@ -5,10 +5,12 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
+import 'package:kitetech_student_portal/data/model/message_room.dart';
+import 'package:kitetech_student_portal/data/model/message_room_member.dart';
 
 class ChatRoomPage extends StatefulWidget {
-  final types.User user;
-  const ChatRoomPage({super.key, required this.user});
+  final MessageRoom messageRoom;
+  const ChatRoomPage({super.key, required this.messageRoom});
 
   @override
   State<ChatRoomPage> createState() => _ChatRoomPageState();
@@ -28,19 +30,90 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
   void _loadInitialMessages() {
-    // Add some sample messages to make the UI look better
-    final welcomeMessage = types.TextMessage(
-      id: 'welcome',
-      text: 'Chào Nguyễn Đạt Khương đẹp trai đã trở lại phòng chat! 👋',
-      createdAt: DateTime.now()
-          .subtract(const Duration(minutes: 5))
-          .millisecondsSinceEpoch,
-      author: widget.user,
-    );
+    // Convert MessageContent to chat UI messages
+    for (var content in widget.messageRoom.messageContents) {
+      final message = types.TextMessage(
+        id: content.id,
+        text: content.content,
+        createdAt: content.dateSent.millisecondsSinceEpoch,
+        author: types.User(
+          id: content.userId,
+          firstName: _getMemberDisplayName(content.userId),
+        ),
+      );
+      messages.insert(0, message);
+    }
 
-    setState(() {
-      messages.insert(0, welcomeMessage);
-    });
+    // Add welcome message if no messages exist
+    if (messages.isEmpty) {
+      final welcomeMessage = types.TextMessage(
+        id: 'welcome',
+        text: widget.messageRoom.isGroup
+            ? 'Chào mừng đến với ${_getRoomDisplayName()}! 👋'
+            : 'Chào mừng đến với cuộc trò chuyện! 👋',
+        createdAt: DateTime.now()
+            .subtract(const Duration(minutes: 5))
+            .millisecondsSinceEpoch,
+        author: types.User(
+          id: "system",
+          firstName: "System",
+        ),
+      );
+
+      setState(() {
+        messages.insert(0, welcomeMessage);
+      });
+    }
+  }
+
+  String _getMemberDisplayName(String userId) {
+    final member = widget.messageRoom.members.firstWhere(
+      (member) => member.userId == userId,
+      orElse: () => MessageRoomMember(
+        userId: userId,
+        messageRoomId: widget.messageRoom.id,
+        isAdmin: false,
+        lastSeen: null,
+      ),
+    );
+    return member
+        .userId; // You might want to replace this with actual display name
+  }
+
+  String _getRoomDisplayName() {
+    if (widget.messageRoom.isGroup) {
+      return widget.messageRoom.name.isNotEmpty
+          ? widget.messageRoom.name
+          : 'Nhóm chat';
+    } else {
+      // For 1-on-1 chat, show the other member's name
+      final otherMember = widget.messageRoom.members.firstWhere(
+        (member) =>
+            member.userId !=
+            'current_user_id', // Replace with actual current user ID
+        orElse: () => widget.messageRoom.members.first,
+      );
+      return otherMember.userId;
+    }
+  }
+
+  MessageRoomMember? _getOtherMember() {
+    if (widget.messageRoom.isGroup) return null;
+
+    return widget.messageRoom.members.firstWhere(
+      (member) =>
+          member.userId !=
+          'current_user_id', // Replace with actual current user ID
+      orElse: () => widget.messageRoom.members.first,
+    );
+  }
+
+  bool _isOtherMemberOnline() {
+    final otherMember = _getOtherMember();
+    if (otherMember?.lastSeen == null) return false;
+
+    return otherMember!.lastSeen!
+        .isAfter(DateTime.now().subtract(const Duration(minutes: 5)));
   }
 
   @override
@@ -65,21 +138,22 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     _addMessage(textMessage);
   }
 
-  String _getLastSeenText(int lastSeen) {
-    final lastSeenTime = DateTime.fromMillisecondsSinceEpoch(lastSeen);
+  String _getLastSeenText(DateTime? lastSeen) {
+    if (lastSeen == null) return "Không xác định";
+
     final now = DateTime.now();
-    final difference = now.difference(lastSeenTime);
+    final difference = now.difference(lastSeen);
 
     if (difference.inMinutes < 1) {
-      return "Active now";
+      return "Đang hoạt động";
     } else if (difference.inMinutes < 60) {
-      return "Active ${difference.inMinutes}m ago";
+      return "Hoạt động ${difference.inMinutes} phút trước";
     } else if (difference.inHours < 24) {
-      return "Active ${difference.inHours}h ago";
+      return "Hoạt động ${difference.inHours} giờ trước";
     } else if (difference.inDays < 7) {
-      return "Active ${difference.inDays}d ago";
+      return "Hoạt động ${difference.inDays} ngày trước";
     } else {
-      return "Last seen ${lastSeenTime.day}/${lastSeenTime.month}/${lastSeenTime.year}";
+      return "Hoạt động ${lastSeen.day}/${lastSeen.month}/${lastSeen.year}";
     }
   }
 
@@ -113,6 +187,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
   AppBar _buildAppBar() {
+    final otherMember = _getOtherMember();
+    final isOnline = _isOtherMemberOnline();
+
     return AppBar(
       title: Row(
         children: [
@@ -120,49 +197,70 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage(widget.user.imageUrl!),
+                backgroundColor: widget.messageRoom.isGroup
+                    ? Colors.blue.shade100
+                    : Colors.grey.shade200,
+                child: Icon(
+                  widget.messageRoom.isGroup ? Icons.group : Icons.person,
+                  color: widget.messageRoom.isGroup
+                      ? Colors.blue.shade600
+                      : Colors.grey.shade600,
+                  size: 20,
+                ),
               ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color:
-                        widget.user.lastSeen == 0 ? Colors.green : Colors.grey,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2,
+              if (!widget.messageRoom.isGroup && otherMember != null)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: isOnline ? Colors.green : Colors.grey,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
           const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${widget.user.firstName!} ${widget.user.lastName!}",
-                style: AppTextStyle.title,
-              ),
-              Text(
-                widget.user.lastSeen == 0
-                    ? "Active now"
-                    : _getLastSeenText(widget.user.lastSeen!),
-                style: AppTextStyle.body.copyWith(
-                  fontSize: 12,
-                  color: widget.user.lastSeen == 0 ? Colors.green : Colors.grey,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _getRoomDisplayName(),
+                  style: AppTextStyle.title.copyWith(fontSize: 16),
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+                if (!widget.messageRoom.isGroup && otherMember != null)
+                  Text(
+                    isOnline
+                        ? "Đang hoạt động"
+                        : _getLastSeenText(otherMember.lastSeen),
+                    style: AppTextStyle.body.copyWith(
+                      fontSize: 12,
+                      color: isOnline ? Colors.green : Colors.grey,
+                    ),
+                  )
+                else if (widget.messageRoom.isGroup)
+                  Text(
+                    "${widget.messageRoom.members.length} thành viên",
+                    style: AppTextStyle.body.copyWith(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ],
       ),
-      centerTitle: true,
+      centerTitle: false,
       backgroundColor: AppColors.primaryColor.withOpacity(0.2),
       elevation: 0,
       actions: [

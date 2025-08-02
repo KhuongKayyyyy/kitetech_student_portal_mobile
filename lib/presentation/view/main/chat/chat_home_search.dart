@@ -38,8 +38,7 @@ class _ChatHomeSearchState extends State<ChatHomeSearch> {
       } else {
         _filteredUsers = FakeData.chatUsers
             .where((user) =>
-                user.firstName!.toLowerCase().contains(query.toLowerCase()) ||
-                user.lastName!.toLowerCase().contains(query.toLowerCase()))
+                user.username.toLowerCase().contains(query.toLowerCase()))
             .toList();
       }
     });

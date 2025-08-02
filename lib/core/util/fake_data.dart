@@ -1,9 +1,11 @@
 // ignore: depend_on_referenced_packages
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:kitetech_student_portal/data/model/chat_request.dart';
+import 'package:kitetech_student_portal/data/model/chat_user.dart';
 import 'package:kitetech_student_portal/data/model/class.dart';
-import 'package:kitetech_student_portal/data/model/enums/NameRecognitionEnum.dart';
 import 'package:kitetech_student_portal/data/model/enums/chat_request_status.dart';
+import 'package:kitetech_student_portal/data/model/message_content.dart';
+import 'package:kitetech_student_portal/data/model/message_room.dart';
+import 'package:kitetech_student_portal/data/model/message_room_member.dart';
 import 'package:kitetech_student_portal/data/model/name_recognition.dart';
 import 'package:kitetech_student_portal/data/model/news.dart';
 import 'package:kitetech_student_portal/data/model/score_data.dart';
@@ -430,86 +432,86 @@ class FakeData {
     // Add more sample data as needed
   ];
 
-  static final List<types.User> chatUsers = [
-    const types.User(
-      id: '1',
-      firstName: 'Nguyen',
-      lastName: 'Dat Khuong',
-      imageUrl:
+  static final List<ChatUser> chatUsers = [
+    ChatUser(
+      username: 'Nguyen Dat Khuong',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 0,
+      status: UserStatus.ONLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
-    const types.User(
-      id: '2',
-      firstName: 'Huynh',
-      lastName: 'Trieu Vy',
-      imageUrl:
+    ChatUser(
+      username: 'Huynh Trieu Vy',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 1717238400000,
+      status: UserStatus.OFFLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
-    const types.User(
-      id: '3',
-      firstName: 'Bui',
-      lastName: 'Ngoc Truong',
-      imageUrl:
+    ChatUser(
+      username: 'Bui Ngoc Truong',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 1717238400000,
+      status: UserStatus.OFFLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
-    const types.User(
-      id: '4',
-      firstName: 'Tran',
-      lastName: 'Minh An',
-      imageUrl:
+    ChatUser(
+      username: 'Tran Minh An',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 0,
+      status: UserStatus.ONLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
-    const types.User(
-      id: '5',
-      firstName: 'Le',
-      lastName: 'Thi Hoa',
-      imageUrl:
+    ChatUser(
+      username: 'Le Thi Hoa',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 1717324800000,
+      status: UserStatus.OFFLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
-    const types.User(
-      id: '6',
-      firstName: 'Pham',
-      lastName: 'Van Nam',
-      imageUrl:
+    ChatUser(
+      username: 'Pham Van Nam',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 0,
+      status: UserStatus.ONLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
-    const types.User(
-      id: '7',
-      firstName: 'Vo',
-      lastName: 'Thanh Linh',
-      imageUrl:
+    ChatUser(
+      username: 'Vo Thanh Linh',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 1717411200000,
+      status: UserStatus.OFFLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
-    const types.User(
-      id: '8',
-      firstName: 'Do',
-      lastName: 'Quang Huy',
-      imageUrl:
+    ChatUser(
+      username: 'Do Quang Huy',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 0,
+      status: UserStatus.ONLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
-    const types.User(
-      id: '9',
-      firstName: 'Nguyen',
-      lastName: 'Thi Mai',
-      imageUrl:
+    ChatUser(
+      username: 'Nguyen Thi Mai',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 1717497600000,
+      status: UserStatus.OFFLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
-    const types.User(
-      id: '10',
-      firstName: 'Hoang',
-      lastName: 'Van Duc',
-      imageUrl:
+    ChatUser(
+      username: 'Hoang Van Duc',
+      avatarUrl:
           'https://images.immediate.co.uk/production/volatile/sites/3/2024/01/avatar-the-last-airbender-cdc2b79.jpg?resize=1200%2C630',
-      lastSeen: 0,
+      status: UserStatus.ONLINE,
+      password: '',
+      lastLogin: DateTime.now(),
     ),
   ];
 
@@ -565,5 +567,168 @@ class FakeData {
         sentUSerId: "1",
         receiveUserId: "2",
         requestStatus: ChatRequestStatus.APPROVED),
+  ];
+
+  static final List<MessageRoom> messageRooms = [
+    MessageRoom(
+      id: "1",
+      name: "Group Chat 1",
+      isGroup: true,
+      createdDate: DateTime.now().subtract(const Duration(days: 2)),
+      createdBy: "1",
+      members: [
+        MessageRoomMember(
+          userId: "1",
+          lastSeen: DateTime.now().subtract(const Duration(minutes: 5)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+        MessageRoomMember(
+          userId: "2",
+          lastSeen: DateTime.now().subtract(const Duration(minutes: 10)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+        MessageRoomMember(
+          userId: "3",
+          lastSeen: DateTime.now().subtract(const Duration(hours: 1)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+      ],
+      messageContents: [
+        MessageContent(
+          id: "1",
+          content: "Hello everyone!",
+          dateSent: DateTime.now().subtract(const Duration(minutes: 30)),
+          messageType: MessageType.TEXT,
+          messageRoomId: '',
+          userId: '',
+        ),
+        MessageContent(
+          id: "2",
+          content: "How's everyone doing?",
+          dateSent: DateTime.now().subtract(const Duration(minutes: 15)),
+          messageType: MessageType.TEXT,
+          messageRoomId: '',
+          userId: '',
+        ),
+      ],
+    ),
+    MessageRoom(
+      id: "2",
+      name: "",
+      isGroup: false,
+      createdDate: DateTime.now().subtract(const Duration(days: 1)),
+      createdBy: "1",
+      members: [
+        MessageRoomMember(
+          userId: "1",
+          lastSeen: DateTime.now().subtract(const Duration(minutes: 2)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+        MessageRoomMember(
+          userId: "2",
+          lastSeen: DateTime.now().subtract(const Duration(minutes: 1)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+      ],
+      messageContents: [
+        MessageContent(
+          id: "3",
+          content: "Hey, how are you?",
+          dateSent: DateTime.now().subtract(const Duration(minutes: 20)),
+          messageType: MessageType.TEXT,
+          messageRoomId: '',
+          userId: '',
+        ),
+        MessageContent(
+          id: "4",
+          content: "I'm good, thanks!",
+          dateSent: DateTime.now().subtract(const Duration(minutes: 10)),
+          messageType: MessageType.TEXT,
+          messageRoomId: '',
+          userId: '',
+        ),
+      ],
+    ),
+    MessageRoom(
+      id: "3",
+      name: "Study Group",
+      isGroup: true,
+      createdDate: DateTime.now().subtract(const Duration(days: 5)),
+      createdBy: "3",
+      members: [
+        MessageRoomMember(
+          userId: "1",
+          lastSeen: DateTime.now().subtract(const Duration(hours: 2)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+        MessageRoomMember(
+          userId: "3",
+          lastSeen: DateTime.now().subtract(const Duration(minutes: 30)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+        MessageRoomMember(
+          userId: "4",
+          lastSeen: DateTime.now().subtract(const Duration(minutes: 45)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+      ],
+      messageContents: [
+        MessageContent(
+          id: "5",
+          content: "Don't forget about the exam tomorrow",
+          dateSent: DateTime.now().subtract(const Duration(hours: 1)),
+          messageType: MessageType.TEXT,
+          messageRoomId: '',
+          userId: '',
+        ),
+      ],
+    ),
+    MessageRoom(
+      id: "4",
+      name: "",
+      isGroup: false,
+      createdDate: DateTime.now().subtract(const Duration(hours: 6)),
+      createdBy: "4",
+      members: [
+        MessageRoomMember(
+          userId: "1",
+          lastSeen: DateTime.now().subtract(const Duration(minutes: 3)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+        MessageRoomMember(
+          userId: "4",
+          lastSeen: DateTime.now().subtract(const Duration(minutes: 5)),
+          messageRoomId: '',
+          isAdmin: true,
+        ),
+      ],
+      messageContents: [
+        MessageContent(
+          id: "6",
+          content: "Can you help me with the homework?",
+          dateSent: DateTime.now().subtract(const Duration(minutes: 25)),
+          messageType: MessageType.TEXT,
+          messageRoomId: '',
+          userId: '',
+        ),
+        MessageContent(
+          id: "7",
+          content: "Sure, what do you need help with?",
+          dateSent: DateTime.now().subtract(const Duration(minutes: 20)),
+          messageType: MessageType.TEXT,
+          messageRoomId: '',
+          userId: '',
+        ),
+      ],
+    ),
   ];
 }

@@ -6,8 +6,12 @@ import 'package:kitetech_student_portal/core/constant/app_global.dart';
 import 'package:kitetech_student_portal/core/router/app_navigation.dart';
 import 'package:kitetech_student_portal/core/theme/app_theme.dart';
 import 'package:kitetech_student_portal/data/client/api_client.dart';
+import 'package:kitetech_student_portal/data/respository/chat_user_repository.dart';
+import 'package:kitetech_student_portal/data/respository/message_room_repository.dart';
 import 'package:kitetech_student_portal/data/respository/student_repository.dart';
 import 'package:kitetech_student_portal/presentation/bloc/authentication/authentication_bloc.dart';
+import 'package:kitetech_student_portal/presentation/bloc/chat_user/chat_user_bloc.dart';
+import 'package:kitetech_student_portal/presentation/bloc/message_room/message_room_bloc.dart';
 import 'package:kitetech_student_portal/presentation/bloc/name_recognition/name_recognition_bloc.dart';
 
 void main() async {
@@ -34,6 +38,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+            create: (context) => ChatUserBloc(ChatUserRepository(ApiClient()))),
+        BlocProvider(
             create: (context) =>
                 AuthenticationBloc(StudentRepository(ApiClient()))),
         BlocProvider(create: (context) => NameRecognitionBloc()),
@@ -41,6 +47,10 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               AuthenticationBloc(StudentRepository(ApiClient()))
                 ..add(AppStarted()), // trigger login check
+        ),
+        BlocProvider(
+          create: (context) =>
+              MessageRoomBloc(MessageRoomRepository(ApiClient())),
         ),
       ],
       child: MaterialApp.router(

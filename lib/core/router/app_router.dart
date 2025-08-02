@@ -26,4 +26,6 @@ class AppRouter {
   static const String homeSearchPage = '/home-search-page';
   static const String nfcPage = '/nfc-page';
   static const String checkChatRequestPage = '/check-chat-request-page';
+  static const String testChatPage = '/test-chat';
+  static const String chatScreen = '/chat-screen';
 }

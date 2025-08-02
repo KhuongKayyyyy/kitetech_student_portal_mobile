@@ -18,7 +18,14 @@ class ApiClient {
   final HttpClient _client;
 
   Uri _buildUri(String baseUrl, String path, [Map<String, dynamic>? query]) {
-    final uri = Uri.parse('$baseUrl/$path');
+    // Remove trailing slash from baseUrl if present
+    final cleanBaseUrl = baseUrl.endsWith('/')
+        ? baseUrl.substring(0, baseUrl.length - 1)
+        : baseUrl;
+    // Remove leading slash from path if present
+    final cleanPath = path.startsWith('/') ? path.substring(1) : path;
+
+    final uri = Uri.parse('$cleanBaseUrl/$cleanPath');
     if (query != null && query.isNotEmpty) {
       return uri.replace(
           queryParameters: query.map((k, v) => MapEntry(k, v?.toString())));
@@ -35,6 +42,7 @@ class ApiClient {
   }) async {
     final uri = _buildUri(baseUrl, path, query);
     final mergedHeaders = {...defaultHeaders, if (headers != null) ...headers};
+
     try {
       final request = await _client.getUrl(uri);
       mergedHeaders.forEach((key, value) {
@@ -42,7 +50,6 @@ class ApiClient {
       });
       final res = await request.close().timeout(defaultTimeout);
       final responseBody = await res.transform(utf8.decoder).join();
-      print('responseBody: $responseBody');
       if (res.statusCode != HttpStatus.ok) {
         throw ApiException('HTTP ${res.statusCode}',
             statusCode: res.statusCode, body: responseBody);
@@ -70,6 +77,7 @@ class ApiClient {
   }) async {
     final uri = _buildUri(baseUrl, path);
     final mergedHeaders = {...defaultHeaders, if (headers != null) ...headers};
+
     try {
       final request = await _client.postUrl(uri);
 
@@ -80,12 +88,13 @@ class ApiClient {
 
       // Write body if provided
       if (body != null) {
-        request.write(jsonEncode(body));
+        final bodyJson = jsonEncode(body);
+        print('Sending body: $bodyJson');
+        request.write(bodyJson);
       }
 
       final res = await request.close().timeout(defaultTimeout);
 
-      print('res.statusCode: ${res.statusCode}');
       // Read response body
       final responseBody = await res.transform(utf8.decoder).join();
 

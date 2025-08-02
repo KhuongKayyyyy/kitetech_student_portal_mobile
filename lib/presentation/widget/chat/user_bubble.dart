@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
+import 'package:kitetech_student_portal/data/model/chat_user.dart';
 
 class UserBubble extends StatelessWidget {
   final VoidCallback onTap;
-  final types.User user;
+  final ChatUser user;
   final bool nameVisible;
   const UserBubble(
       {super.key,
@@ -31,7 +30,7 @@ class UserBubble extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundImage: NetworkImage(user.imageUrl!),
+                  backgroundImage: NetworkImage(user.avatarUrl!),
                 ),
                 Positioned(
                   bottom: 0,
@@ -40,7 +39,9 @@ class UserBubble extends StatelessWidget {
                     width: 20,
                     height: 20,
                     decoration: BoxDecoration(
-                      color: user.lastSeen == 0 ? Colors.green : Colors.grey,
+                      color: user.status == UserStatus.ONLINE
+                          ? Colors.green
+                          : Colors.grey,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: Colors.white,
@@ -55,7 +56,7 @@ class UserBubble extends StatelessWidget {
           const SizedBox(height: 10),
           if (nameVisible)
             Text(
-              user.lastName!,
+              user.username,
               style: AppTextStyle.body,
             ),
         ],

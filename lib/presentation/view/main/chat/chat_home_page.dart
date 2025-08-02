@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/constant/app_color.dart';
@@ -9,7 +10,13 @@ import 'package:kitetech_student_portal/core/constant/app_text_style.dart';
 import 'package:kitetech_student_portal/core/network/api.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/data/model/app_user.dart';
+import 'package:kitetech_student_portal/data/model/chat_user.dart';
+import 'package:kitetech_student_portal/data/model/message_room.dart';
 import 'package:kitetech_student_portal/data/model/student_card_data.dart';
+import 'package:kitetech_student_portal/presentation/bloc/authentication/authentication_bloc.dart';
+import 'package:kitetech_student_portal/presentation/bloc/chat_user/chat_user_bloc.dart';
+import 'package:kitetech_student_portal/presentation/bloc/message_room/message_room_bloc.dart';
 import 'package:kitetech_student_portal/presentation/widget/chat/chat_room_item.dart';
 import 'package:kitetech_student_portal/presentation/widget/chat/chat_search_bar.dart';
 import 'package:kitetech_student_portal/presentation/widget/chat/user_bubble.dart';
@@ -17,6 +24,7 @@ import 'package:http/http.dart' as http;
 import 'package:kitetech_student_portal/presentation/widget/student/student_card.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ChatHomePage extends StatefulWidget {
   const ChatHomePage({super.key});
@@ -34,13 +42,22 @@ class _ChatHomePageState extends State<ChatHomePage> {
   String? studentRFID;
   Map<String, dynamic>? studentInfo;
   StudentCardData? foundStudentCard;
-
+  AppUser? currentUser;
   @override
   void initState() {
     super.initState();
     _checkNfcAvailability();
     fToast = FToast();
     fToast.init(context);
+    context.read<ChatUserBloc>().add(ChatUserEventGetAllUsers());
+    // Get current user from authentication state
+    final authState = context.read<AuthenticationBloc>().state;
+    if (authState is AuthenticationStateLoggedIn) {
+      currentUser = authState.appUser;
+    }
+
+    context.read<MessageRoomBloc>().add(
+        MessageRoomEventGetMessageRoomsByUserName(currentUser?.username ?? ''));
   }
 
   Future<void> _checkNfcAvailability() async {
@@ -71,40 +88,92 @@ class _ChatHomePageState extends State<ChatHomePage> {
             },
             icon: const Icon(Icons.add),
           ),
+          // Test button for new chat functionality
+          IconButton(
+            onPressed: () {
+              _showTestChatDialog(context);
+            },
+            icon: const Icon(Icons.science),
+            tooltip: 'Test Chat API',
+          ),
         ],
       ),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (notification) {
-          if (notification.metrics.pixels <= 0 &&
-              notification is ScrollUpdateNotification &&
-              notification.scrollDelta != null &&
-              notification.scrollDelta! < -10) {
-            // User is pulling down at the top
+      body: BlocListener<AuthenticationBloc, AuthenticationState>(
+        listener: (context, state) {
+          if (state is AuthenticationStateLoggedIn) {
             setState(() {
-              _showSearchBar = true;
+              currentUser = state.appUser;
             });
           }
-          return false;
         },
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: _showSearchBar ? 60 : 0,
-                child: _showSearchBar
-                    ? Hero(
-                        tag: "chat-search",
-                        child: ChatSearchBar(
-                          onTap: () => context.push(AppRouter.chatHomeSearch),
-                        ))
-                    : const SizedBox.shrink(),
-              ),
-              _buildUserList(),
-              const Divider(height: 1),
-              _buildChatRoomList(),
-            ],
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            if (notification.metrics.pixels <= 0 &&
+                notification is ScrollUpdateNotification &&
+                notification.scrollDelta != null &&
+                notification.scrollDelta! < -10) {
+              // User is pulling down at the top
+              setState(() {
+                _showSearchBar = true;
+              });
+            }
+            return false;
+          },
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  height: _showSearchBar ? 60 : 0,
+                  child: _showSearchBar
+                      ? Hero(
+                          tag: "chat-search",
+                          child: ChatSearchBar(
+                            onTap: () => context.push(AppRouter.chatHomeSearch),
+                          ))
+                      : const SizedBox.shrink(),
+                ),
+                BlocBuilder<ChatUserBloc, ChatUserState>(
+                  bloc: context.read<ChatUserBloc>(),
+                  builder: (context, chatUserState) {
+                    if (chatUserState is ChatUserStateAllUsers) {
+                      // Only filter if currentUser is not null
+                      final filteredUsers = currentUser != null
+                          ? chatUserState.allUsers
+                              .where((user) =>
+                                  user.username != currentUser!.username)
+                              .toList()
+                          : chatUserState.allUsers;
+                      return _buildUserList(users: filteredUsers);
+                    } else if (chatUserState is ChatUserStateError) {
+                      return Text(chatUserState.message);
+                    } else if (chatUserState is ChatUserStateLoading) {
+                      return Skeletonizer(
+                        child: _buildUserList(users: FakeData.chatUsers),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+                const Divider(height: 1),
+                BlocBuilder<MessageRoomBloc, MessageRoomState>(
+                  bloc: context.read<MessageRoomBloc>(),
+                  builder: (context, mrState) {
+                    if (mrState is MessageRoomStateLoaded) {
+                      return _buildChatRoomList(mrState.messageRooms);
+                    } else if (mrState is MessageRoomStateError) {
+                      return Text(mrState.message);
+                    } else if (mrState is MessageRoomStateLoading) {
+                      return Skeletonizer(
+                        child: _buildChatRoomList(FakeData.messageRooms),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -720,14 +789,14 @@ class _ChatHomePageState extends State<ChatHomePage> {
     );
   }
 
-  Widget _buildUserList() {
+  Widget _buildUserList({required List<ChatUser> users}) {
     return Container(
       height: 100,
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        itemCount: FakeData.chatUsers.length,
+        itemCount: users.length,
         itemBuilder: (context, index) {
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 6.0),
@@ -758,7 +827,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
                     ],
                   ),
                   child: UserBubble(
-                    user: FakeData.chatUsers[index],
+                    user: users[index],
                     onTap: () {},
                   ),
                 ),
@@ -770,18 +839,55 @@ class _ChatHomePageState extends State<ChatHomePage> {
     );
   }
 
-  Widget _buildChatRoomList() {
+  Widget _buildChatRoomList(List<MessageRoom> messageRooms) {
     return ListView.builder(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: FakeData.chatUsers.length,
+      itemCount: messageRooms.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: ChatRoomItem(user: FakeData.chatUsers[index]),
+          child: ChatRoomItem(messageRoom: messageRooms[index]),
         );
       },
+    );
+  }
+
+  // Test method for new chat functionality
+  void _showTestChatDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Test Chat API'),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+                'This will test the chat functionality using your authenticated user.'),
+            SizedBox(height: 16),
+            Text('Features to test:'),
+            Text('• Connect to chat (uses your login)'),
+            Text('• Get online users'),
+            Text('• Search users'),
+            Text('• Send messages'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // Navigate to the test chat screen
+              context.push('/test-chat');
+            },
+            child: const Text('Start Test'),
+          ),
+        ],
+      ),
     );
   }
 }
