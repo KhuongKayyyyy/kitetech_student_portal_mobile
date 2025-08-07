@@ -170,7 +170,6 @@ class _ELearningHomePageState extends State<ELearningHomePage> {
                     selectedSemester = newValue;
                   });
                   _filterCourses();
-                  print('Selected semester: $newValue');
                 },
               ),
             ),

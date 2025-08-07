@@ -28,4 +28,7 @@ class AppRouter {
   static const String checkChatRequestPage = '/check-chat-request-page';
   static const String testChatPage = '/test-chat';
   static const String chatScreen = '/chat-screen';
+
+  static const String elearningClassDetailPage = '/elearning-class-detail-page';
+  static const String classMaterialDetail = '/class-material-detail';
 }

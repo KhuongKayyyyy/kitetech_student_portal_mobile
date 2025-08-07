@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:kitetech_student_portal/core/network/api.dart';
 import 'package:kitetech_student_portal/core/router/app_router.dart';
 import 'package:kitetech_student_portal/core/util/fake_data.dart';
+import 'package:kitetech_student_portal/data/model/ElearningClass.dart';
+import 'package:kitetech_student_portal/data/model/ElearningClassSectionMaterial.dart';
 import 'package:kitetech_student_portal/data/model/message_room.dart';
 import 'package:kitetech_student_portal/data/model/name_recognition.dart';
 import 'package:kitetech_student_portal/presentation/view/add_on/check_chat_request_page.dart';
@@ -19,6 +21,8 @@ import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_pa
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_search.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_room_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_search_history.dart';
+import 'package:kitetech_student_portal/presentation/view/main/e-learning/class_material_detail.dart';
+import 'package:kitetech_student_portal/presentation/view/main/e-learning/e_learning_class_detail_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/e-learning/e_learning_home_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/home_search_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
@@ -207,7 +211,19 @@ class AppNavigation {
         GoRoute(
             path: AppRouter.elearning,
             name: AppRouter.elearning,
-            builder: (context, state) => const ELearningHomePage())
+            builder: (context, state) => const ELearningHomePage()),
+        GoRoute(
+            path: AppRouter.elearningClassDetailPage,
+            name: AppRouter.elearningClassDetailPage,
+            builder: (context, state) => ELearningClassDetailPage(
+                  course: state.extra as ElearningClassModel,
+                )),
+        GoRoute(
+            path: AppRouter.classMaterialDetail,
+            name: AppRouter.classMaterialDetail,
+            builder: (context, state) => ClassMaterialDetail(
+                  material: state.extra as ClassSectionMaterialModel,
+                ))
       ],
     );
   }
