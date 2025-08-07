@@ -2,7 +2,7 @@ class AppRouter {
   static const String home = '/';
   static const String authentication = '/authentication';
   static const String profile = '/profile';
-  static const String news = '/news';
+  static const String elearning = '/elearning';
   static const String notifications = '/notifications';
   static const String padding = '/padding';
 

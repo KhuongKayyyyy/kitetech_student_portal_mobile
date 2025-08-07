@@ -19,6 +19,7 @@ import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_pa
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_home_search.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_room_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/chat/chat_search_history.dart';
+import 'package:kitetech_student_portal/presentation/view/main/e-learning/e_learning_home_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/home_search_page.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/homepage.dart';
 import 'package:kitetech_student_portal/presentation/view/main/home/nfc_test.dart';
@@ -78,7 +79,7 @@ class AppNavigation {
             MainWrapper(navigationShell: navigationShell),
         branches: [
           _buildHomeBranch(),
-          _buildNewsBranch(),
+          _buildElearningBranch(),
           _buildPaddingBranch(),
           _buildChatBranch(),
           _buildProfileBranch(),
@@ -199,14 +200,14 @@ class AppNavigation {
     );
   }
 
-  static StatefulShellBranch _buildNewsBranch() {
+  static StatefulShellBranch _buildElearningBranch() {
     return StatefulShellBranch(
       navigatorKey: _newsNavigatorKey,
       routes: [
         GoRoute(
-            path: AppRouter.news,
-            name: AppRouter.news,
-            builder: (context, state) => const Homepage())
+            path: AppRouter.elearning,
+            name: AppRouter.elearning,
+            builder: (context, state) => const ELearningHomePage())
       ],
     );
   }
